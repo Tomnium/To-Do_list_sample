@@ -4,7 +4,7 @@ import * as actionTypes from './actionTypes'
 export const dataLoadStart = () => {
     return (dispatch) => {
         axios.get('/list')
-            .then(response => dispatch(dataLoadSuccess(response.data)))
+            .then(response => dispatch(response.status < 400 ? dataLoadSuccess(response.data) : dataLoadError()))
             .catch(() => dispatch(dataLoadError()))
     }
 }
@@ -25,7 +25,7 @@ const dataLoadError = () => {
 export const addItemStart = (item) => {
     return (dispatch) => {
         axios.post(`/item`, { text: item })
-            .then(response => dispatch(addItemSuccess(response.data)))
+            .then(response => dispatch(response.status < 400 ? addItemSuccess(response.data) : addItemError()))
             .catch(() => dispatch(addItemError()))
     }
 }
@@ -46,7 +46,7 @@ const addItemError = () => {
 export const renameItemStart = (id, newText) => {
     return (dispatch) => {
         axios.put(`/item/${ id }`, { text: newText })
-            .then(response => dispatch(renameItemSuccess(response.data)))
+            .then(response => dispatch(response.status < 400 ? renameItemSuccess(response.data) : renameItemError()))
             .catch(() => dispatch(renameItemError()))
     }
 }
@@ -67,7 +67,7 @@ const renameItemError = () => {
 export const deleteItemStart = (id) => {
     return (dispatch) => {
         axios.delete(`/item/${ id }`)
-            .then(response => dispatch(deleteItemSuccess(response.data)))
+            .then(response => dispatch(response.status < 300 ? deleteItemSuccess(response.data) : deleteItemError()))
             .catch(() => dispatch(deleteItemError()))
     }
 }

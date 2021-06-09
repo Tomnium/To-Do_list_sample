@@ -13,8 +13,7 @@ export const List = () => {
     }, [dispatch])
 
     const handleAdd = () => {
-        if (text)
-            dispatch(actions.addItemStart(text))
+        dispatch(actions.addItemStart(text))
     }
 
     const handleTextChange = e => {

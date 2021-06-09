@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const Joi = require('joi');
 const app = express()
 const port = 8080
 
@@ -15,13 +16,23 @@ app.get('/list', (req, res) => {
 
 app.post('/item', (req, res) => {
     const id = Date.now()
-    tasks[id] = req.body.text
-    res.json(tasks)
+    const { error, value } = Joi.string().required().min(1).validate(req.body.text)
+    if (!error) {
+        tasks[id] = value 
+        res.json(tasks)
+    } else {
+        res.status(500).send({ error: 'Invalid item' })
+    }
 })
 
 app.put('/item/:id', (req, res) => {
-    tasks[req.params.id] = req.body.text
-    res.json(tasks)
+    const { error, value } = Joi.string().required().min(1).validate(req.body.text)
+    if (!error) {
+        tasks[req.params.id] = value 
+        res.json(tasks)
+    } else {
+        res.status(500).send({ error: 'Invalid item' })
+    }
 })
 
 app.delete('/item/:id', (req, res) => {
