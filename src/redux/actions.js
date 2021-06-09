@@ -2,10 +2,17 @@ import axios from '../axios'
 import * as actionTypes from './actionTypes'
 
 export const dataLoadStart = () => {
-    return (dispatch) => {
-        axios.get('/list')
-            .then(response => dispatch(response.status < 400 ? dataLoadSuccess(response.data) : dataLoadError()))
-            .catch(() => dispatch(dataLoadError()))
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.DATA_LOAD_START })
+            const response = await axios.get('/list')
+            dispatch(response.status < 400 ? 
+                dataLoadSuccess(response.data) : 
+                dataLoadError()
+            )
+        } catch {
+            dispatch(dataLoadError())
+        }
     }
 }
 
@@ -23,10 +30,17 @@ const dataLoadError = () => {
 }
 
 export const addItemStart = (item) => {
-    return (dispatch) => {
-        axios.post(`/item`, { text: item })
-            .then(response => dispatch(response.status < 400 ? addItemSuccess(response.data) : addItemError()))
-            .catch(() => dispatch(addItemError()))
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.ADD_ITEM_START })
+            const response = await axios.post(`/item`, { text: item })
+            dispatch(response.status < 400 ? 
+                addItemSuccess(response.data) : 
+                addItemError()
+            )
+        } catch {
+            dispatch(addItemError())
+        }
     }
 }
 
@@ -44,10 +58,17 @@ const addItemError = () => {
 }
 
 export const renameItemStart = (id, newText) => {
-    return (dispatch) => {
-        axios.put(`/item/${ id }`, { text: newText })
-            .then(response => dispatch(response.status < 400 ? renameItemSuccess(response.data) : renameItemError()))
-            .catch(() => dispatch(renameItemError()))
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.RENAME_ITEM_START })
+            const response = await axios.put(`/item/${ id }`, { text: newText })
+            dispatch(response.status < 400 ? 
+                renameItemSuccess(response.data) : 
+                renameItemError()
+            )
+        } catch {
+            dispatch(renameItemError())
+        }
     }
 }
 
@@ -65,10 +86,17 @@ const renameItemError = () => {
 }
 
 export const deleteItemStart = (id) => {
-    return (dispatch) => {
-        axios.delete(`/item/${ id }`)
-            .then(response => dispatch(response.status < 300 ? deleteItemSuccess(response.data) : deleteItemError()))
-            .catch(() => dispatch(deleteItemError()))
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.DELETE_ITEM_START })
+            const response = await axios.delete(`/item/${ id }`)
+            dispatch(response.status < 400 ? 
+                deleteItemSuccess(response.data) : 
+                deleteItemError()
+            )
+        } catch {
+            dispatch(deleteItemError())
+        }
     }
 }
 

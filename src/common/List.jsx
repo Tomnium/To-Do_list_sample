@@ -22,7 +22,7 @@ export const List = () => {
 
     return (
         <div className="list">
-            { Object.keys(data).length !== 0 ?
+            { !Object.keys(data).length ?
                 Object.keys(data).map(item => <ListItem key = { `${ item }` } text = { data[item] } serverId={ item } />) :
                 <div>No items</div>}
             <div className="add-new">
