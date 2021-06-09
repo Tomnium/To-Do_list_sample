@@ -15,20 +15,20 @@ app.get('/list', (req, res) => {
 
 app.post('/item', (req, res) => {
     const id = Date.now()
-    tasks[id] = req.body
-    res.send(`added item, length: ${ Object.keys(tasks).length }, body: ${ JSON.stringify(req.body)}`)
+    tasks[id] = req.body.text
+    res.json(tasks)
 })
 
 app.put('/item/:id', (req, res) => {
-    tasks[req.params.id] = req.body
-    res.send('set item')
+    tasks[req.params.id] = req.body.text
+    res.json(tasks)
 })
 
 app.delete('/item/:id', (req, res) => {
     delete tasks[req.params.id]
-    res.send('removed item')
+    res.json(tasks)
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Example app listening at http://localhost:${ port }`)
 })

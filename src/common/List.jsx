@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListItem } from './ListItem'
-import * as actions from '../store/actions'
+import * as actions from '../redux/actions'
 
 export const List = () => {
     const dispatch = useDispatch()
@@ -9,12 +9,12 @@ export const List = () => {
     const [text, setText] = useState('')
 
     useEffect(() => {
-        dispatch(actions.loadData())
-    }, [])
+        dispatch(actions.dataLoadStart())
+    }, [dispatch])
 
     const handleAdd = () => {
         if (text)
-            dispatch(actions.add(text))
+            dispatch(actions.addItemStart(text))
     }
 
     const handleTextChange = e => {
@@ -23,8 +23,8 @@ export const List = () => {
 
     return (
         <div className="list">
-            { data.length !== 0 ?
-                data.map(elem => <ListItem key={`${elem.id}`} text={elem.text} serverId={elem.id} />) :
+            { Object.keys(data).length !== 0 ?
+                Object.keys(data).map(item => <ListItem key = { `${ item }` } text = { data[item] } serverId={ item } />) :
                 <div>No items</div>}
             <div className="add-new">
                 <form className="item-form new-item-form" onSubmit={handleAdd}>

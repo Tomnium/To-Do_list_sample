@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import * as actions from '../store/actions'
+import * as actions from '../redux/actions'
 
 export const ListItem = (props) => {
     const [newName, setNewName] = useState(props.text)
@@ -8,19 +8,19 @@ export const ListItem = (props) => {
     const dispatch = useDispatch()
 
     const handleRename = () => {
-        dispatch(actions.rename(props.serverId, newName))
+        dispatch(actions.renameItemStart(props.serverId, newName))
     }
 
     const handleDelete = () => {
-        dispatch(actions.deleteById(props.serverId))
+        dispatch(actions.deleteItemStart(props.serverId))
     }
 
     return (
-        <div className="list-item">
-            <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
+        <div className = "list-item">
+            <input type = "text" value = { newName } onChange = { (e) => setNewName(e.target.value) } />
             <div>
-                <button onClick={handleRename}>Change</button>
-                <button onClick={handleDelete}>Delete</button>
+                <button onClick = { handleRename }>Change</button>
+                <button onClick = { handleDelete }>Delete</button>
             </div>
         </div>
     )
