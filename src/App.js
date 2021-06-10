@@ -5,6 +5,7 @@ import { reducer } from './redux/reducer'
 import thunk from 'redux-thunk'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { AuthForm, List, Header } from './components'
+import { signUpStart, logInStart } from './redux/actions'
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
@@ -15,11 +16,11 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Switch>
-            <Route path = "/sign-in">
-              <AuthForm title = "log in" submit = { () => {} }/>
+            <Route path = "/log-in">
+              <AuthForm title = "log in" action = { logInStart }/>
             </Route>
             <Route path = "/sign-up">
-              <AuthForm title = "sign up" submit = { () => {} }/>
+              <AuthForm title = "sign up" action = { signUpStart }/>
             </Route>
             <Route path = "/" exact>
               <Header />

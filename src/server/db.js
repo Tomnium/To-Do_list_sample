@@ -1,12 +1,12 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const dbConfig = require("./db.config.js")
 
-module.exports.initModel = () => {
+exports.initTasksModel = () => {
     const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, { dialect: dbConfig.dialect })
     
     const tasksModel = sequelize.define('TasksModel', {
         serverId: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.STRING,
             primaryKey: true
         },
         text: DataTypes.STRING
@@ -16,7 +16,22 @@ module.exports.initModel = () => {
     return tasksModel
 }
 
-module.exports.getList = async (model) => {
+exports.initUsersModel = () => {
+    const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, { dialect: dbConfig.dialect })
+    
+    const usersModel = sequelize.define('UsersModel', {
+        email: {
+            type: DataTypes.STRING,
+            primaryKey: true
+        },
+        password: DataTypes.STRING
+    })
+
+    usersModel.sync()
+    return usersModel
+}
+
+exports.getList = async (model) => {
     const queryResult = await model.findAll()
     const tasks = queryResult.reduce((prev, result) => {
         prev[result.serverId] = result.text
@@ -25,14 +40,23 @@ module.exports.getList = async (model) => {
     return Promise.resolve(tasks)
 }
 
-module.exports.addItem = async (model, id, item) => {
+exports.addItem = async (model, id, item) => {
     return model.create({ serverId: id, text: item })
 }
 
-module.exports.updateItem = async (model, id, newText) => {
+exports.updateItem = async (model, id, newText) => {
     return model.update({ text: newText }, { where: { serverId: id } })
 }
 
-module.exports.deleteItem = (model, id) => {
+exports.deleteItem = async (model, id) => {
     return model.destroy({ where: { serverId: id } })
+}
+
+exports.createUser = async (model, email, password) => {
+    const user = await model.findOne({ where: { email } })
+    return user === null ? model.create({ email, password }) : Promise.reject(new Error("Already exists"))
+}
+
+exports.logIn = async (model, email, password) => {
+    return model.findOne({ where: { email, password } })
 }

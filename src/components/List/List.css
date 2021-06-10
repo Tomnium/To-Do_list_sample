@@ -26,6 +26,7 @@
 }
 
 .add-new input {
+    font-size: 16px;
     background-color: rgba(0, 0, 0, 0.05);
     border: none;
     border-radius: 5px;

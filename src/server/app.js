@@ -6,7 +6,8 @@ const db = require('./db')
 const app = express()
 const port = 8080
 const creationDate = Date.now()
-const tasksModel = db.initModel()
+const tasksModel = db.initTasksModel()
+const usersModel = db.initUsersModel()
 const schema = Joi
     .string()
     .required()
@@ -37,6 +38,34 @@ app.post('/item', validate(schema), (req, res) => {
         const id = Date.now() - creationDate
         await db.addItem(tasksModel, id, req.body.text)
         await sendList(res)
+    })()
+})
+
+app.post('/sign-up', (req, res) => {
+    (async () => {
+        try {
+            await db.createUser(usersModel, req.body.email, req.body.password)
+            res.status(200).json({
+                didLogIn: true,
+                loggedInUser: req.body.email
+            })
+        } catch {
+            res.status(400).json({ didLogIn: false, error: 'User already exists' })
+        }
+    })()
+})
+
+app.post('/log-in', (req, res) => {
+    (async () => {
+        try {
+            const user = await db.logIn(usersModel, req.body.email, req.body.password)
+            if (user !== null)
+                res.status(200).json({ didLogIn: true, loggedInUser: req.body.email })
+            else
+                throw new Error()
+        } catch {
+            res.status(404).json({ didLogIn: false, error: 'User not found' })
+        }
     })()
 })
 

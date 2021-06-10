@@ -112,3 +112,60 @@ const deleteItemError = () => {
         type: actionTypes.DELETE_ITEM_ERROR
     }
 }
+
+export const signUpStart = (email, password) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.SIGN_UP_START })
+            const response = await axios.post('/sign-up', { email, password })
+            dispatch(response.status < 400 ?
+                signUpSuccess(response.data.loggedInUser) :
+                signUpError()
+            )
+        } catch {
+            dispatch(signUpError())
+        }
+    }
+}
+
+const signUpSuccess = (email) => {
+    return {
+        type: actionTypes.SIGN_UP_SUCCESS,
+        email
+    }
+}
+
+const signUpError = () => {
+    return {
+        type: actionTypes.SIGN_UP_ERROR
+    }
+}
+
+export const logInStart = (email, password) => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.LOG_IN_START })
+            const response = await axios.post('/log-in', { email, password })
+            console.log(response.status)
+            dispatch(response.status < 400 ?
+                logInSuccess(response.data.loggedInUser) :
+                logInError()
+            )
+        } catch {
+            dispatch(logInError())
+        }
+    }
+}
+
+const logInSuccess = (email) => {
+    return {
+        type: actionTypes.LOG_IN_SUCCESS,
+        email
+    }
+}
+
+const logInError = () => {
+    return {
+        type: actionTypes.LOG_IN_ERROR
+    }
+}

@@ -38,6 +38,21 @@ export const reducer = (state = initialState, action) => {
             }
         case actionTypes.DELETE_ITEM_ERROR:
             return state
+        case actionTypes.SIGN_UP_SUCCESS:
+            return {
+                ...state,
+                auth: {
+                    isLoggedIn: true,
+                    loggedInUser: action.email
+                }
+            }
+        case actionTypes.SIGN_UP_ERROR:
+            return {
+                ...state,
+                auth: {
+                    isLoggedIn: false
+                }
+            }
         default:
             return state
     }
