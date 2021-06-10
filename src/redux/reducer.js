@@ -2,8 +2,10 @@ import * as actionTypes from './actionTypes'
 
 const initialState = {
     data: {},
-    isLoggedIn: false,
-    loggedInUser: ''
+    auth: {
+        isLoggedIn: false,
+        loggedInUser: ''
+    }
 }
 
 export const reducer = (state = initialState, action) => {

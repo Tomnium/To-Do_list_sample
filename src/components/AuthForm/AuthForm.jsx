@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './AuthForm.css'
+import { Link } from 'react-router-dom'
 
 export const AuthForm = props => {
     const [email, setEmail] = useState('')
@@ -18,7 +19,7 @@ export const AuthForm = props => {
     return (
         <div className = "form-container">
             <form onSubmit = { submitFunction }>
-                <p>{ title }</p>
+                <p className = "title">{ title }</p>
                 <label>
                     Email
                     <input 
@@ -33,6 +34,10 @@ export const AuthForm = props => {
                         value = { password } 
                         onChange = { handlePasswordChange }/>
                 </label>
+                { title === 'log in' ? 
+                    <p>Don't have an account? <Link className = "link" to = "sign-up">Sign Up</Link></p> :
+                    <p>Already have an account? <Link className = "link" to = "sign-in">Log In</Link></p>
+                }
                 <button type = "submit">{ title }</button>
             </form>
         </div>

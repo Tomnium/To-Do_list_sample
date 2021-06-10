@@ -4,10 +4,15 @@
     justify-content: center;
 }
 
-.form-container p {
+.form-container .title {
     text-align: center;
     text-transform: uppercase;
     font-weight: 700;
+}
+
+.form-container .link {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.3);
 }
 
 .form-container form {
