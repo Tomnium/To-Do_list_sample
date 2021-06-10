@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import './ListItem.css'
 import { useDispatch } from 'react-redux'
-import * as actions from '../redux/actions'
+import * as actions from '../../redux/actions'
 
 export const ListItem = (props) => {
     const [newName, setNewName] = useState(props.text)

@@ -1,0 +1,39 @@
+.list-item {
+    width: 60%;
+    margin: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.list-item input {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.list-item input:active, .list-item input:focus {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.list-item button {
+    width: 100px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    margin: 5px;
+}
+
+.list-item button:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}

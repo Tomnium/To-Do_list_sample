@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import './List.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { ListItem } from './ListItem'
-import * as actions from '../redux/actions'
+import { ListItem } from '../'
+import * as actions from '../../redux/actions'
 
 export const List = () => {
     const dispatch = useDispatch()
@@ -24,10 +25,10 @@ export const List = () => {
         <div className="list">
             { Object.keys(data).length ?
                 Object.keys(data).map(item => <ListItem key = { `${ item }` } text = { data[item] } serverId={ item } />) :
-                <div>No items</div>}
+                <div className = "no-items">No items</div>}
             <div className="add-new">
                 <form className="item-form new-item-form" onSubmit={handleAdd}>
-                    <input type="text" value={text} onChange={handleTextChange} />
+                    <input type="text" value={text} onChange={handleTextChange} autoFocus/>
                     <button type="submit">Save</button>
                 </form>
             </div>
