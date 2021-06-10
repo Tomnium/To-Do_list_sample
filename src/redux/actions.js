@@ -7,7 +7,7 @@ export const dataLoadStart = () => {
             dispatch({ type: actionTypes.DATA_LOAD_START })
             const response = await axios.get('/list')
             dispatch(response.status < 400 ? 
-                dataLoadSuccess(response.data) : 
+                dataLoadSuccess(response.data) :
                 dataLoadError()
             )
         } catch {
