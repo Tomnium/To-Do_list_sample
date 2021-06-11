@@ -4,12 +4,20 @@
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    font-family: Poppins, sans-serif;
 }
 
-.log-in-button {
-    display: block;
+.username {
+    margin: 0;
+}
+
+.auth-button {
+    display: flex;
+    box-sizing: border-box;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
     width: 100px;
+    height: 30px;
     padding: 5px;
     border: none;
     border-radius: 5px;
@@ -19,7 +27,7 @@
     text-decoration: none;
 }
 
-.log-in-button:hover {
+.auth-button:hover {
     background-color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
 }

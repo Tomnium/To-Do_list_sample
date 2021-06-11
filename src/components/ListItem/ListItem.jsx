@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import './ListItem.css'
 import { useDispatch } from 'react-redux'
 import * as actions from '../../redux/actions'
+import CreateIcon from '@material-ui/icons/Create'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 export const ListItem = (props) => {
     const [newName, setNewName] = useState(props.text)
@@ -20,8 +22,8 @@ export const ListItem = (props) => {
         <div className = "list-item">
             <input type = "text" value = { newName } onChange = { (e) => setNewName(e.target.value) } />
             <div>
-                <button onClick = { handleRename }>Change</button>
-                <button onClick = { handleDelete }>Delete</button>
+                <CreateIcon className = "list-item-icon rename" onClick = { handleRename }/>
+                <DeleteIcon className = "list-item-icon delete" onClick = { handleDelete }/>
             </div>
         </div>
     )

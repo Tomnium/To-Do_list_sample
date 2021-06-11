@@ -38,17 +38,15 @@
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-.add-new button {
-    width: 100px;
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
+.submit-icon {
     margin: 5px;
 }
 
-.add-new button:hover {
-    background-color: rgba(0, 0, 0, 0.3);
+.submit-icon path {
+    fill: rgba(0, 0, 0, 0.3)
+}
+
+.submit-icon path:hover {
+    fill: #8bc34a;
     cursor: pointer;
 }

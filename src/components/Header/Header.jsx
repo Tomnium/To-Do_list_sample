@@ -15,12 +15,12 @@ export const Header = () => {
     return (
         <div className = "header-container">
             { 
-                auth.isLoggedIn ? <p>Logged in as { auth.loggedInUser }</p> : <div></div>  
+                auth.isLoggedIn ? <p className = "username">Logged in as { auth.loggedInUser }</p> : <div></div>  
             }
             { 
                 auth.isLoggedIn ? 
-                    <button className = "log-in-button" onClick = { handleLogOut }>Log Out</button>  :
-                    <Link className = "log-in-button" to = "/auth/log-in">Log in</Link>
+                    <button className = "auth-button" onClick = { handleLogOut }>Log Out</button>  :
+                    <Link className = "auth-button" to = "/auth/log-in">Log in</Link>
             }
         </div>
     )
