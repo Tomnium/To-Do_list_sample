@@ -169,3 +169,26 @@ const logInError = () => {
         type: actionTypes.LOG_IN_ERROR
     }
 }
+
+export const logOutStart = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.LOG_OUT_START })
+            dispatch(logOutSuccess())
+        } catch {
+            dispatch(logOutError())
+        }
+    }
+}
+
+const logOutSuccess = () => {
+    return {
+        type: actionTypes.LOG_OUT_SUCCESS
+    }
+}
+
+const logOutError = () => {
+    return {
+        type: actionTypes.LOG_OUT_ERROR
+    }
+}
