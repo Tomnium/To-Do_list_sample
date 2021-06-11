@@ -11,7 +11,7 @@ const createUser = async (email, password) => {
         },
         defaults: {
             email,
-            hashedPassword
+            password: hashedPassword
         }
     })
 
@@ -27,10 +27,9 @@ const logIn = async (email, password) => {
         } 
     })
 
-    if (!user)
-        return Promise.reject(new Error("User does't exist"))
+    if (!user) return Promise.reject(new Error("User does't exist"))
 
-    const isPasswordValid = bcrypt.compare(password, user.password)
+    const isPasswordValid = await bcrypt.compare(password, user.password)
 
     return isPasswordValid ?
         Promise.resolve(user.email) :

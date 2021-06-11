@@ -8,7 +8,9 @@ import { AuthForm, List, Header } from './components'
 import { signUpStart, logInStart } from './redux/actions'
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
+const store = createStore(reducer, composeEnhancers(
+  applyMiddleware(thunk)
+))
 
 function App() {
   return (

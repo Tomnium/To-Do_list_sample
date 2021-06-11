@@ -30,6 +30,22 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 data: action.data
             }
+        case actionTypes.LOG_IN_SUCCESS:
+            return {
+                ...state,
+                auth: {
+                    isLoggedIn: true,
+                    loggedInUser: action.email
+                }
+            }
+        case actionTypes.LOG_IN_ERROR:
+            return {
+                ...state,
+                auth: {
+                    isLoggedIn: false,
+                    loggedInUser: ''
+                }
+            }
         case actionTypes.SIGN_UP_SUCCESS:
             return {
                 ...state,
