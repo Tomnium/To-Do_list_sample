@@ -5,7 +5,7 @@ export const dataLoadStart = () => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DATA_LOAD_START })
-            const response = await axios.get('/list')
+            const response = await axios.get('/tasks/list')
             dispatch(response.status < 400 ? 
                 dataLoadSuccess(response.data) :
                 dataLoadError()
@@ -33,7 +33,7 @@ export const addItemStart = (item) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.ADD_ITEM_START })
-            const response = await axios.post(`/item`, { text: item })
+            const response = await axios.post(`/tasks/item`, { text: item })
             dispatch(response.status < 400 ? 
                 addItemSuccess(response.data) : 
                 addItemError()
@@ -61,7 +61,7 @@ export const renameItemStart = (id, newText) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.RENAME_ITEM_START })
-            const response = await axios.put(`/item/${ id }`, { text: newText })
+            const response = await axios.put(`/tasks/item/${ id }`, { text: newText })
             dispatch(response.status < 400 ? 
                 renameItemSuccess(response.data) : 
                 renameItemError()
@@ -89,7 +89,7 @@ export const deleteItemStart = (id) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DELETE_ITEM_START })
-            const response = await axios.delete(`/item/${ id }`)
+            const response = await axios.delete(`/tasks/item/${ id }`)
             dispatch(response.status < 400 ? 
                 deleteItemSuccess(response.data) : 
                 deleteItemError()
@@ -117,7 +117,7 @@ export const signUpStart = (email, password) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.SIGN_UP_START })
-            const response = await axios.post('/sign-up', { email, password })
+            const response = await axios.post('/auth/sign-up', { email, password })
             dispatch(response.status < 400 ?
                 signUpSuccess(response.data.loggedInUser) :
                 signUpError()
@@ -145,7 +145,7 @@ export const logInStart = (email, password) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.LOG_IN_START })
-            const response = await axios.post('/log-in', { email, password })
+            const response = await axios.post('/auth/log-in', { email, password })
             console.log(response.status)
             dispatch(response.status < 400 ?
                 logInSuccess(response.data.loggedInUser) :

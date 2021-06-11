@@ -15,7 +15,7 @@ export const Header = () => {
     return (
         <div className = "header-container">
             { 
-                auth.isLoggedIn || <p>Logged in as { auth.loggedInUser }</p>    
+                // auth.isLoggedIn || <p>Logged in as { auth.loggedInUser }</p>    
             }
             { 
                 auth.isLoggedIn ? 

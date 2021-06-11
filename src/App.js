@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { reducer } from './redux/reducer'
 import thunk from 'redux-thunk'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { AuthForm, List, Header } from './components'
 import { signUpStart, logInStart } from './redux/actions'
 
@@ -16,16 +16,17 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Switch>
-            <Route path = "/log-in">
+            <Route path = "/auth/log-in">
               <AuthForm title = "log in" action = { logInStart }/>
             </Route>
-            <Route path = "/sign-up">
+            <Route path = "/auth/sign-up">
               <AuthForm title = "sign up" action = { signUpStart }/>
             </Route>
-            <Route path = "/" exact>
+            <Route path = "/tasks">
               <Header />
               <List />
             </Route>
+            <Redirect to = "/tasks"/>
           </Switch>
         </BrowserRouter>
       </div>
