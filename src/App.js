@@ -28,7 +28,7 @@ function App() {
               <Header />
               <List />
             </Route>
-            <Redirect to = "/tasks"/>
+            <Redirect to = "/auth/log-in"/>
           </Switch>
         </BrowserRouter>
       </div>

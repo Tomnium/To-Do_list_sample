@@ -1,0 +1,11 @@
+SERVER:
+1. Auth via jwt
+2. middleware for checking jwt
+3. private routers
+    /Список задач
+    /Добаление
+    /Удаление
+
+Front
+Store in localStorage jwt
+not loggined -> redirect to login form

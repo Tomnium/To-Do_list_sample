@@ -2,11 +2,16 @@ const { DataTypes } = require('sequelize')
 const db = require('../')
 
 const usersModel = db.sequelize.define('UsersModel', {
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     email: {
         type: DataTypes.STRING,
-        primaryKey: true
+        unique: true
     },
-    password: DataTypes.STRING
+    password: DataTypes.STRING 
 })
 
 usersModel.sync()

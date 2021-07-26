@@ -129,7 +129,7 @@ export const signUpStart = (email, password) => {
 }
 
 const signUpSuccess = (email) => {
-    localStorage.setItem('isAuthenticated', true)
+    // localStorage.setItem('isAuthenticated', true)
     localStorage.setItem('loggedInUserEmail', email)
     window.location.replace('/tasks')
     return {
@@ -161,7 +161,7 @@ export const logInStart = (email, password) => {
 }
 
 const logInSuccess = (email) => {
-    localStorage.setItem('isAuthenticated', true)
+    // localStorage.setItem('isAuthenticated', true)
     localStorage.setItem('loggedInUserEmail', email)
     window.location.replace('/tasks')
     return {
@@ -188,9 +188,9 @@ export const logOutStart = () => {
 }
 
 const logOutSuccess = () => {
-    localStorage.setItem('isAuthenticated', false)
+    // localStorage.setItem('isAuthenticated', false)
     localStorage.setItem('loggedInUserEmail', '')
-    window.location.replace('/tasks')
+    window.location.replace('/auth/log-in')
     return {
         type: actionTypes.LOG_OUT_SUCCESS
     }

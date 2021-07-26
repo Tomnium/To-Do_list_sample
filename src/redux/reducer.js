@@ -3,7 +3,7 @@ import * as actionTypes from './actionTypes'
 const initialState = {
     data: {},
     auth: {
-        isLoggedIn: localStorage.getItem('isAuthenticated') === 'true',
+        isLoggedIn: localStorage.getItem('loggedInUserEmail') !== '',
         loggedInUser: localStorage.getItem('loggedInUserEmail')
     }
 }
