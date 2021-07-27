@@ -16,31 +16,32 @@ const createUser = async (email, password) => {
         }
     })
 
-    const tokens = await tokenService.generateTokens(user.id);
+    const tokens = await tokenService.generateTokens(user);
     const variable = await tokenService.saveToken(user.id, tokens.refreshToken);
-    
-    return created ? 
-        Promise.resolve({userEmail:user.email, ...tokens}) : 
+
+    return created ?
+        Promise.resolve({userEmail:user.email, ...tokens}) :
         Promise.reject(new Error("Already exists"))
 }
 
 const logIn = async (email, password) => {
-    const user = await User.findOne({ 
-        where: { 
-            email 
-        } 
+    const user = await User.findOne({
+        where: {
+            email
+        }
     })
 
     if (!user) return Promise.reject(new Error("User does't exist"))
+    const tokens = await tokenService.generateTokens(user);
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     return isPasswordValid ?
-        Promise.resolve(user.email) :
+        Promise.resolve({userEmail: user.email, ...tokens}) :
         Promise.reject(new Error("Invalid password"))
 }
 
-module.exports = { 
+module.exports = {
     createUser,
     logIn
 }
