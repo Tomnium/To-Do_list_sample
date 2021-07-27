@@ -1,19 +1,33 @@
 const tokenService = require('../services/jwt');
+const jwt = require('jsonwebtoken');
 
-const auth = (req, res, next) => {
+const auth = () => (req, res, next) => {
     try{
-        const token = req.header("x-auth-token");
+        const authHeader = req.headers.autorization;
 
-        // console.log(JSON.stringify(req.headers))
-        if (!token){ 
-            res.status(403).json("Access denied.");  
+        console.log(`AUTH MIDDLEWARE`)
+        console.log(authHeader)
+
+        if (!authHeader){
+            res.status(401).json("401 Access denied: header error.");
+            // return
         }
-        
-        const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
-        req.user = decoded;
-        next();
+        const accessToken = authHeader.split(' ')[1];
+        if (!accessToken) {
+            res.status(401).json("401 Access denied: access token invalid.");
+            // return
+        }
+
+        const userData = tokenService.validateAccessToken(accessToken)
+        if(!userData){
+            res.status(401).json("401 Access denied: can't validate token.");
+        }
+
+        req.user = userData
+        next()
+
     } catch{
-        res.status(400).json({ error: 'Invalid token' });
+        res.status(401).json({ error: 'Invalid token' });
     }
 }
 

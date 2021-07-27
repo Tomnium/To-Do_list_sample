@@ -1,12 +1,12 @@
-import axios from '../axios'
+import Axios, {apiURL} from '../axios'
 import * as actionTypes from './actionTypes'
 
 export const dataLoadStart = () => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DATA_LOAD_START })
-            const response = await axios.get('/tasks/list')
-            dispatch(response.status < 400 ? 
+            const response = await Axios.get('/tasks/list')
+            dispatch(response.status < 400 ?
                 dataLoadSuccess(response.data) :
                 dataLoadError()
             )
@@ -33,9 +33,9 @@ export const addItemStart = (item) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.ADD_ITEM_START })
-            const response = await axios.post(`/tasks/item`, { text: item })
-            dispatch(response.status < 400 ? 
-                addItemSuccess(response.data) : 
+            const response = await Axios.post(`/tasks/item`, { text: item })
+            dispatch(response.status < 400 ?
+                addItemSuccess(response.data) :
                 addItemError()
             )
         } catch {
@@ -61,9 +61,9 @@ export const renameItemStart = (id, newText) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.RENAME_ITEM_START })
-            const response = await axios.put(`/tasks/item/${ id }`, { text: newText })
-            dispatch(response.status < 400 ? 
-                renameItemSuccess(response.data) : 
+            const response = await Axios.put(`/tasks/item/${ id }`, { text: newText })
+            dispatch(response.status < 400 ?
+                renameItemSuccess(response.data) :
                 renameItemError()
             )
         } catch {
@@ -89,9 +89,9 @@ export const deleteItemStart = (id) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DELETE_ITEM_START })
-            const response = await axios.delete(`/tasks/item/${ id }`)
-            dispatch(response.status < 400 ? 
-                deleteItemSuccess(response.data) : 
+            const response = await Axios.delete(`/tasks/item/${ id }`)
+            dispatch(response.status < 400 ?
+                deleteItemSuccess(response.data) :
                 deleteItemError()
             )
         } catch {
@@ -117,9 +117,9 @@ export const signUpStart = (email, password) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.SIGN_UP_START })
-            const response = await axios.post('/auth/sign-up', { email, password })
+            const response = await Axios.post('/auth/sign-up', { email, password })
             dispatch(response.status < 400 ?
-                signUpSuccess(response.data.loggedInUser) :
+                signUpSuccess(response) :
                 signUpError()
             )
         } catch {
@@ -128,13 +128,16 @@ export const signUpStart = (email, password) => {
     }
 }
 
-const signUpSuccess = (email) => {
-    // localStorage.setItem('isAuthenticated', true)
-    localStorage.setItem('loggedInUserEmail', email)
+const signUpSuccess = (response) => {
+    const {loggedInUser, accessToken} = response.data;
+
+    localStorage.setItem('token', accessToken)
+    localStorage.setItem('loggedInUserEmail', loggedInUser)
+
     window.location.replace('/tasks')
     return {
         type: actionTypes.SIGN_UP_SUCCESS,
-        email
+        email: loggedInUser
     }
 }
 
@@ -148,10 +151,10 @@ export const logInStart = (email, password) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.LOG_IN_START })
-            const response = await axios.post('/auth/log-in', { email, password })
-            console.log(response.status)
+            const response = await Axios.post('/auth/log-in', { email, password })
+
             dispatch(response.status < 400 ?
-                logInSuccess(response.data.loggedInUser) :
+                logInSuccess(response) :
                 logInError()
             )
         } catch {
@@ -160,13 +163,16 @@ export const logInStart = (email, password) => {
     }
 }
 
-const logInSuccess = (email) => {
-    // localStorage.setItem('isAuthenticated', true)
-    localStorage.setItem('loggedInUserEmail', email)
+const logInSuccess = (response) => {
+    const {loggedInUser, refreshToken, accessToken} = response.data;
+
+    localStorage.setItem('loggedInUserEmail', loggedInUser)
+    localStorage.setItem('token', accessToken)
+
     window.location.replace('/tasks')
     return {
         type: actionTypes.LOG_IN_SUCCESS,
-        email
+        email: loggedInUser
     }
 }
 
@@ -188,8 +194,9 @@ export const logOutStart = () => {
 }
 
 const logOutSuccess = () => {
-    // localStorage.setItem('isAuthenticated', false)
-    localStorage.setItem('loggedInUserEmail', '')
+    localStorage.removeItem('token')
+    localStorage.removeItem('loggedInUserEmail')
+
     window.location.replace('/auth/log-in')
     return {
         type: actionTypes.LOG_OUT_SUCCESS
@@ -199,5 +206,33 @@ const logOutSuccess = () => {
 const logOutError = () => {
     return {
         type: actionTypes.LOG_OUT_ERROR
+    }
+}
+
+export const checkAuth = () => {
+    return async (dispatch) => {
+        try{
+            dispatch({type:actionTypes.CHECK_AUTH_START})
+            
+            const response = await Axios.post(`/auth/refresh`)
+
+            dispatch(response.status < 400 ?
+                checkAuthSuccess(response) :
+                checkAuthError()
+                )
+        } catch {
+            dispatch(checkAuthError())
+        }
+    }
+}
+
+const checkAuthSuccess = async (response) => {
+    localStorage.setItem('token', response.data.accessToken)
+    return {type: actionTypes.CHECK_AUTH_SUCCESS}
+}
+
+const checkAuthError = () => {
+    return {
+        type: actionTypes.CHECK_AUTH_ERROR
     }
 }
