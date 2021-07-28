@@ -5,12 +5,8 @@ const logInUser = async (req, res) => {
     try {
         const { email, password } = req.body
         const {userEmail, ...tokens} = await logIn(email, password)
-
-        // {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true}
         
-        res.cookie('refreshToken', tokens.refreshToken, {httpOnly: true})
-        console.log(`LOGINUSER ----------- ${tokens.refreshToken}`)
-
+        res.cookie('refreshToken', tokens.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
         res.status(401).json({isLogined: true, loggedInUser:userEmail, ...tokens})
  
     } catch (e) {
@@ -23,7 +19,7 @@ const signUpUser = async (req, res) => {
         const { email, password } = req.body
         const {userEmail, ...tokens} = await createUser(email, password)
 
-        res.cookie('refreshToken', tokens.refreshToken);
+        res.cookie('refreshToken', tokens.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
         res.status(200).json({ didLogIn: true, loggedInUser: userEmail , ...tokens})
     } catch (e) {
         res.status(400).json({ didLogIn: false, error: e.message })
