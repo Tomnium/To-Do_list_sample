@@ -60,8 +60,8 @@
     outline: none;
     background-color: rgba(0, 0, 0, 0.3);
 }
-
-.form-container button {
+ 
+.form-container .submit-link {
     width: 100px;
     height: 30px;
     border: none;
@@ -70,9 +70,14 @@
     text-transform: uppercase;
     margin: 5px;
     margin-top: 20px;
+    transition: .3s;
+    text-decoration: none;
+    /* padding-top: 5px; */
+    color:rgba(0, 0, 0, 0.95)
 }
 
-.form-container button:hover {
+.form-container .submit-link:hover {
     background-color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    transition: .3s;
 }

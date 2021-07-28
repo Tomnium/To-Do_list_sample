@@ -3,8 +3,9 @@ const db = require('../')
 
 const tasksModel = db.sequelize.define('TasksModel', {
     id: {
-        type: DataTypes.STRING,
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
     userId: {
         type: DataTypes.INTEGER,

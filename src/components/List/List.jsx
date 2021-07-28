@@ -24,13 +24,13 @@ export const List = () => {
 
     return (
         <div className="list">
-            { Object.keys(data).length ?
-                Object.keys(data).map(item => <ListItem key = { `${ item }` } text = { data[item] } serverId={ item } />) :
-                <div className = "no-items">No items</div>}
+            {Object.keys(data).length ?
+                Object.keys(data).map(item => <ListItem key={`${item}`} text={data[item]} serverId={item} />) :
+                <div className="no-items">No items</div>}
             <div className="add-new">
                 <form className="item-form new-item-form">
-                    <input type="text" value={text} onChange={handleTextChange} autoFocus/>
-                    <AddCircleIcon className = "submit-icon" onClick = { handleAdd }/>
+                    <input type="text" value={text} onChange={handleTextChange} autoFocus />
+                    <AddCircleIcon className="submit-icon" onClick={handleAdd} />
                 </form>
             </div>
         </div>

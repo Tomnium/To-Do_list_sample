@@ -10,7 +10,7 @@ const getList = async () => {
 }
 
 const addItem = async (id, item) => {
-    return Task.create({ id, text: item })
+    return Task.create({ text: item , userId: 1})
 }
 
 const updateItem = async (id, newText) => {

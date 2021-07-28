@@ -20,7 +20,7 @@ const dataLoadSuccess = (data) => {
     return {
         type: actionTypes.DATA_LOAD_SUCCESS,
         data
-    }
+    } 
 }
 
 const dataLoadError = () => {
@@ -170,6 +170,7 @@ const logInSuccess = (response) => {
     localStorage.setItem('token', accessToken)
 
     window.location.replace('/tasks')
+
     return {
         type: actionTypes.LOG_IN_SUCCESS,
         email: loggedInUser
@@ -186,7 +187,10 @@ export const logOutStart = () => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.LOG_OUT_START })
-            dispatch(logOutSuccess())
+            const response = await Axios.post(`/auth/log-out`)
+            dispatch(response.status===200?
+                        logOutSuccess():
+                        logOutError())
         } catch {
             dispatch(logOutError())
         }
@@ -206,34 +210,5 @@ const logOutSuccess = () => {
 const logOutError = () => {
     return {
         type: actionTypes.LOG_OUT_ERROR
-    }
-}
-
-export const checkAuth = () => {
-    return async (dispatch) => {
-        try {
-            dispatch({ type: actionTypes.CHECK_AUTH_START })
-
-            const response = await Axios.post(`/auth/refresh`)
-
-            dispatch(response.status < 400 ?
-                checkAuthSuccess(response) :
-                checkAuthError()
-            )
-        } catch {
-            dispatch(checkAuthError())
-        }
-    }
-}
-
-const checkAuthSuccess = async (response) => {
-    localStorage.setItem('token', response.data.accessToken)
-
-    return { type: actionTypes.CHECK_AUTH_SUCCESS }
-}
-
-const checkAuthError = () => {
-    return {
-        type: actionTypes.CHECK_AUTH_ERROR
     }
 }

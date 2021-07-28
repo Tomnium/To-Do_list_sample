@@ -4,7 +4,7 @@ const initialState = {
     data: {},
     auth: {
         isLoggedIn: localStorage.getItem('token') !== '',
-        loggedInUser: localStorage.getItem('loggedInUserEmail')
+        loggedInUser: localStorage.getItem('loggedInUserEmail'),
     }
 }
 

@@ -1,4 +1,4 @@
-const { User, Token } = require('../db/models')
+const { User } = require('../db/models')
 const tokenService = require('../services/jwt');
 const bcrypt = require('bcrypt')
 
@@ -17,7 +17,7 @@ const createUser = async (email, password) => {
     })
 
     const tokens = await tokenService.generateTokens(user);
-    const variable = await tokenService.saveToken(user.id, tokens.refreshToken);
+    // const variable = await tokenService.saveToken(user.id, tokens.refreshToken);
 
     return created ?
         Promise.resolve({userEmail:user.email, ...tokens}) :

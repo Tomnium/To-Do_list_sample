@@ -1,39 +1,41 @@
 const tokenService = require('../services/jwt');
 const jwt = require('jsonwebtoken');
 
-const auth = async (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
+        let status = 200
+        let message = "OK"
 
         if (!authHeader) {
-            return res.status(401).json({
-                message: "401 Access denied: header error.",
-                header: req.headers
-            });
-            // throw new Error("Access denied: header error.")
+            status = 401
+            message = "401 Access denied: header error."
         }
 
         const accessToken = authHeader.split(' ')[1];
         if (!accessToken) {
-            return res.status(401).json("401 Access denied: access token invalid.");
-            // throw new Error("Access denied: access token invalid.")
+            status = 401
+            message = "401 Access denied: access token invalid."
         }
 
         const userData = await tokenService.validateAccessToken(accessToken)
 
         if (!userData) {
-            return res.status(401).json("401 Access denied: can't validate token.");
-            // throw new Error("Access denied: can't validate token.")
+            status = 401
+            message = "401 Access denied: can't validate token."
         }
 
-        req.user = userData
-        next()
-
+        status === 200?
+                next():
+                res.status(status)
+                    .send({message})
     } catch {
-        res.status(401).json({ error: 'Invalid token' });
+        res.status(401)
+            .send({ message: 'Invalid token' })
+            
     }
 }
 
 module.exports = {
-    auth
+    authMiddleware
 }

@@ -4,9 +4,8 @@ import {Provider, useSelector} from 'react-redux'
 import { reducer } from './redux/reducer'
 import thunk from 'redux-thunk'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
-import { AuthForm, List, Header } from './components'
+import { AuthForm, List, Header, PublicRoute } from './components'
 import {signUpStart, logInStart, checkAuth} from './redux/actions'
-import {useEffect} from "react";
 
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
@@ -15,32 +14,18 @@ const store = createStore(reducer, composeEnhancers(
 ))
 
 function App() {
-  const {isLoggedIn, loggedInUser} = store.getState().auth
-
-  useEffect(()=>{
-    if(localStorage.getItem('token')){
-      store.dispatch(checkAuth())
-    }
-  }, [])
-
-  // useEffect(()=>{
-  //   if(isLoggedIn){
-  //     <Redirect to = "/auth/log-in"/>
-  //   } else{
-  //     <Redirect to = "/auth/sign-up"/>
-  //   }
-  // },[isLoggedIn])
+  const {isLoggedIn, loggedInUser, isError} = store.getState().auth
 
   return (
     <Provider store = { store }>
       <div className="App">
         <BrowserRouter>
           <Switch>
-            <Route path = "/auth/log-in">
-              <AuthForm title = "log in" action = { logInStart }/>
+            <Route property={isLoggedIn} path = "/auth/log-in">
+              <AuthForm title = "log in" action = { logInStart } isLoggedIn={isLoggedIn}/>
             </Route>
-            <Route path = "/auth/sign-up">
-              <AuthForm title = "sign up" action = { signUpStart }/>
+            <Route property={isLoggedIn} path = "/auth/sign-up">
+              <AuthForm title = "sign up" action = { signUpStart } isLoggedIn={isLoggedIn}/>
             </Route>
             <Route path = "/tasks">
               <Header />

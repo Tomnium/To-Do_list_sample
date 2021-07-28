@@ -19,11 +19,11 @@ export const ListItem = (props) => {
     }
 
     return (
-        <div className = "list-item">
-            <input type = "text" value = { newName } onChange = { (e) => setNewName(e.target.value) } />
+        <div className="list-item">
+            <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
             <div>
-                <CreateIcon className = "list-item-icon rename" onClick = { handleRename }/>
-                <DeleteIcon className = "list-item-icon delete" onClick = { handleDelete }/>
+                <CreateIcon className="list-item-icon rename" onClick={handleRename} />
+                <DeleteIcon className="list-item-icon delete" onClick={handleDelete} />
             </div>
         </div>
     )
