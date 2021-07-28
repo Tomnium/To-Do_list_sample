@@ -17,7 +17,21 @@ const refreshTokens = async (req, res) => {
         res.status(404).json({ isRefreshed: false, error: e.message ? e.message : "Can't refresh token", cookie: req.cookies })
     }
 }
-
+const chechUserAuth = async(req, res) => {
+    try{
+        if(req.cookies.refreshToken){ 
+            const token = req.cookies.refreshToken;
+            const data = await validateRefreshToken(token)
+            console.log(data)
+            res.status(200).json({userIsAuth: true, data})
+        } else{
+            res.status(403).json({userIsAuth: false, message:"cookie doesnt contain token"})
+        }
+    } catch(e){
+        res.status(403).json({userIsAuth: false, message:e.message? e.message:"Exception occured"})
+    } 
+}
 module.exports = {
-    refreshTokens
+    refreshTokens,
+    chechUserAuth
 }

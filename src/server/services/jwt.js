@@ -5,7 +5,7 @@ const access_secret = "access_secret"
 const refresh_secret = "refresh_secret"
 
 const generateTokens = async ({ id, email }) => {
-  const accessToken = jwt.sign({ id, email }, access_secret, { expiresIn: "10s" })
+  const accessToken = jwt.sign({ id, email }, access_secret, { expiresIn: "300s" })
   const refreshToken = jwt.sign({ id, email }, refresh_secret, { expiresIn: "30d" })
 
   return Promise.resolve({ accessToken, refreshToken })
@@ -23,7 +23,7 @@ const validateAccessToken = async (token) => {
 const validateRefreshToken = async (token) => {
   try {
     const userData = jwt.verify(token, refresh_secret);
-    return Promise.resolve(userData);
+    return Promise.resolve({...userData, token});
   } catch (error) {
     return Promise.reject(error);
   }

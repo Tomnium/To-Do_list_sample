@@ -25,7 +25,7 @@ export const AuthForm = props => {
         dispatch(action(email, password))
         setEmail('')
         setPassword('')
-        // history.push('/tasks')
+        history.push('/tasks')
 
     }
 

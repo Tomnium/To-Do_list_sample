@@ -8,6 +8,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 export const List = () => {
     const dispatch = useDispatch()
     const data = useSelector(state => state.data)
+    const userID = useSelector(state => state.auth.userId)
     const [text, setText] = useState('')
 
     useEffect(() => {
@@ -15,7 +16,7 @@ export const List = () => {
     }, [dispatch])
 
     const handleAdd = () => {
-        dispatch(actions.addItemStart(text))
+        dispatch(actions.addItemStart(userID, text))
     }
 
     const handleTextChange = e => {

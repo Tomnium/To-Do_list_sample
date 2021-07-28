@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-export const PublicRoute = ({ component: Component, property, restricted, to = "/", ...rest }) => {
+export const PublicRoute = ({ component: Component, property = true, restricted, to = "/", ...rest }) => {
     return (
         // restricted = false meaning public route
         // restricted = true meaning restricted route

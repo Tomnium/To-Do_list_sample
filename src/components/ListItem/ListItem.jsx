@@ -5,7 +5,7 @@ import * as actions from '../../redux/actions'
 import CreateIcon from '@material-ui/icons/Create'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-export const ListItem = (props) => {
+export const ListItem = React.memo((props) => {
     const [newName, setNewName] = useState(props.text)
 
     const dispatch = useDispatch()
@@ -27,4 +27,4 @@ export const ListItem = (props) => {
             </div>
         </div>
     )
-}
+})

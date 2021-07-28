@@ -21,9 +21,9 @@ export const Header = () => {
                 isLoggedIn ? <p className="username">Logged in as {loggedInUser}</p> : <div></div>
             }
             {
-                isLoggedIn ?
-                    <button className="auth-button" onClick={handleLogOut}>Log Out</button> :
-                    <Link className="auth-button" to="/auth/log-in">Log in</Link>
+                // isLoggedIn ?
+                <button className="auth-button" onClick={handleLogOut}>Log Out</button> //:
+                // <Link className="auth-button" to="/auth/log-in">Log in</Link>
             }
         </div>
     )

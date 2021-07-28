@@ -19,9 +19,9 @@ const getFullList = async (req, res) => {
 }
 
 const addTask = async (req, res) => {
-    const { text } = req.body
-    const id = Date.now() - creationDate
-    await addItem(id, text)
+    const { userID, text } = req.body
+    // const id = Date.now() - creationDate
+    await addItem(userID, text)
     await sendList(res)
 }
 

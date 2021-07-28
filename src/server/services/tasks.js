@@ -9,8 +9,8 @@ const getList = async () => {
     return Promise.resolve(parsedTasks)
 }
 
-const addItem = async (id, item) => {
-    return Task.create({ text: item , userId: 1})
+const addItem = async (userId, item) => {
+    return Task.create({ text: item , userId})
 }
 
 const updateItem = async (id, newText) => {
