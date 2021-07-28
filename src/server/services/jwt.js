@@ -4,21 +4,21 @@ const { User, Token } = require('../db/models')
 const access_secret = "access_secret"
 const refresh_secret = "refresh_secret"
 
-const generateTokens = async ({id, email}) => {
-    const accessToken = jwt.sign({id, email}, access_secret, {expiresIn: "10s"})
-    const refreshToken = jwt.sign({id, email}, refresh_secret, {expiresIn: "30d"})
+const generateTokens = async ({ id, email }) => {
+  const accessToken = jwt.sign({ id, email }, access_secret, { expiresIn: "30s" })
+  const refreshToken = jwt.sign({ id, email }, refresh_secret, { expiresIn: "30d" })
 
-    return Promise.resolve({accessToken, refreshToken})
+  return Promise.resolve({ accessToken, refreshToken })
 }
 
 // deprecated: will be deleted in the next patch
 const saveToken = async (userId, refreshToken) => {
-  const token = await Token.findOne({ where: {user: userId} })
-  if(token){
+  const token = await Token.findOne({ where: { user: userId } })
+  if (token) {
     token.refreshToken = refreshToken;
     return Promise.resolve(token.save())
   } else {
-    const newToken = await Token.create({user:userId, refreshToken})
+    const newToken = await Token.create({ user: userId, refreshToken })
     return Promise.resolve(newToken)
   }
 }
@@ -30,49 +30,49 @@ const removeToken = async (refreshToken) => {
       refreshToken
     }
   })
-    return Promise.resolve(tokenData)
+  return Promise.resolve(tokenData)
 }
 
 const validateAccessToken = async (token) => {
-    try {
-        const userData = jwt.verify(token, access_secret);
-        return Promise.resolve(userData);
-      } catch (error) {
-        return Promise.reject(error);
-      }
+  try {
+    const userData = jwt.verify(token, access_secret);
+    return Promise.resolve(userData);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 }
 
 const validateRefreshToken = async (token) => {
-    try {
-        console.log(`VALIDATEREFRESHTOKEN: `)
-        console.log(token)
-        const userData = jwt.verify(token, refresh_secret);
-        return Promise.resolve(userData);
-      } catch (error) {
-        return Promise.reject(error);
-      }
+  try {
+    console.log(`VALIDATEREFRESHTOKEN: `)
+    console.log(token)
+    const userData = jwt.verify(token, refresh_secret);
+    return Promise.resolve(userData);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 }
 
 const findToken = async (refreshToken) => {
-    const userData = await Token.findOne({ where: {refreshToken} });
-    return Promise.resolve(userData);
+  const userData = await Token.findOne({ where: { refreshToken } });
+  return Promise.resolve(userData);
 }
 
 const refresh = async (refreshToken) => {
-  
-  if(!refreshToken){
-      return Promise.reject("refreshToken undefined")
+
+  if (!refreshToken) {
+    return Promise.reject("refreshToken undefined")
   }
   const userData = await validateRefreshToken(refreshToken)
   const token = await findToken(refreshToken)
-  
-  if(!userData || !token){
-      return Promise.reject(`Can't find refresh token or it is doesn't valid`)
+
+  if (!userData || !token) {
+    return Promise.reject(`Can't find refresh token or it is doesn't valid`)
   }
   const tokens = await generateTokens(userData)
   await saveToken(userData.id, tokens.refreshToken)
 
-  return {userData, ...tokens}
+  return { userData, ...tokens }
 }
 
 module.exports = {

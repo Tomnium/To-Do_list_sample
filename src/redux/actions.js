@@ -1,4 +1,4 @@
-import Axios, {apiURL} from '../axios'
+import Axios, { apiURL } from '../axios'
 import * as actionTypes from './actionTypes'
 
 export const dataLoadStart = () => {
@@ -61,7 +61,7 @@ export const renameItemStart = (id, newText) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.RENAME_ITEM_START })
-            const response = await Axios.put(`/tasks/item/${ id }`, { text: newText })
+            const response = await Axios.put(`/tasks/item/${id}`, { text: newText })
             dispatch(response.status < 400 ?
                 renameItemSuccess(response.data) :
                 renameItemError()
@@ -89,7 +89,7 @@ export const deleteItemStart = (id) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DELETE_ITEM_START })
-            const response = await Axios.delete(`/tasks/item/${ id }`)
+            const response = await Axios.delete(`/tasks/item/${id}`)
             dispatch(response.status < 400 ?
                 deleteItemSuccess(response.data) :
                 deleteItemError()
@@ -129,7 +129,7 @@ export const signUpStart = (email, password) => {
 }
 
 const signUpSuccess = (response) => {
-    const {loggedInUser, accessToken} = response.data;
+    const { loggedInUser, accessToken } = response.data;
 
     localStorage.setItem('token', accessToken)
     localStorage.setItem('loggedInUserEmail', loggedInUser)
@@ -164,7 +164,7 @@ export const logInStart = (email, password) => {
 }
 
 const logInSuccess = (response) => {
-    const {loggedInUser, refreshToken, accessToken} = response.data;
+    const { loggedInUser, refreshToken, accessToken } = response.data;
 
     localStorage.setItem('loggedInUserEmail', loggedInUser)
     localStorage.setItem('token', accessToken)
@@ -211,15 +211,15 @@ const logOutError = () => {
 
 export const checkAuth = () => {
     return async (dispatch) => {
-        try{
-            dispatch({type:actionTypes.CHECK_AUTH_START})
-            
+        try {
+            dispatch({ type: actionTypes.CHECK_AUTH_START })
+
             const response = await Axios.post(`/auth/refresh`)
 
             dispatch(response.status < 400 ?
                 checkAuthSuccess(response) :
                 checkAuthError()
-                )
+            )
         } catch {
             dispatch(checkAuthError())
         }
@@ -228,7 +228,8 @@ export const checkAuth = () => {
 
 const checkAuthSuccess = async (response) => {
     localStorage.setItem('token', response.data.accessToken)
-    return {type: actionTypes.CHECK_AUTH_SUCCESS}
+
+    return { type: actionTypes.CHECK_AUTH_SUCCESS }
 }
 
 const checkAuthError = () => {
