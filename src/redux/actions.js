@@ -20,7 +20,7 @@ const dataLoadSuccess = (data) => {
     return {
         type: actionTypes.DATA_LOAD_SUCCESS,
         data
-    } 
+    }
 }
 
 const dataLoadError = () => {
@@ -188,9 +188,9 @@ export const logOutStart = () => {
         try {
             dispatch({ type: actionTypes.LOG_OUT_START })
             const response = await Axios.post(`/auth/log-out`)
-            dispatch(response.status===200?
-                        logOutSuccess():
-                        logOutError())
+            dispatch(response.status === 200 ?
+                logOutSuccess() :
+                logOutError())
         } catch {
             dispatch(logOutError())
         }
@@ -214,23 +214,22 @@ const logOutError = () => {
 }
 
 export const checkUserAuthStart = () => {
-    return async (dispatch)=> {
-        try{
-            dispatch({type: actionTypes.CHECK_AUTH_START})
+    return async (dispatch) => {
+        try {
+            dispatch({ type: actionTypes.CHECK_AUTH_START })
 
             const response = await Axios.post(`/auth/user`)
-            console.log(response)
-            dispatch(response.status == 200?
-                    checkUserSuccess(response.data.data):
-                    checkUserError())
-        } catch{
+            dispatch(response.status == 200 ?
+                checkUserSuccess(response.data.data) :
+                checkUserError())
+        } catch {
             dispatch(checkUserError())
         }
     }
-} 
+}
 
 const checkUserSuccess = (data) => {
-    const {id, email} = data;
+    const { id, email } = data;
     return {
         type: actionTypes.CHECK_AUTH_SUCCESS,
         id,

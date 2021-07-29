@@ -11,7 +11,7 @@ export const Header = () => {
 
     const handleLogOut = () => {
         dispatch(logOutStart())
-        // history.push('/auth/log-in')
+        history.push('/auth/log-in')
     }
 
 

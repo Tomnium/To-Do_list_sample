@@ -9,7 +9,7 @@ export const AuthForm = props => {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch()
-    const { title, action, isLoggedIn } = props
+    const { title, action } = props
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)

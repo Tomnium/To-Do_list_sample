@@ -10,7 +10,7 @@ const initialState = {
 }
 
 export const reducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case actionTypes.ADD_ITEM_SUCCESS:
             return {
                 ...state,
@@ -31,30 +31,9 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 data: action.data
             }
-        case actionTypes.LOG_IN_SUCCESS:{
-            const newAuth = {...state.auth,
-                isLoggedIn: true,
-                loggedInUser: action.email
-            }
-            return {
-            ...state,
-                auth: newAuth
-            }
-        }
-
-        case actionTypes.LOG_IN_ERROR:{
-            const newAuth = {...state.auth,
-                isLoggedIn: false,
-                loggedInUser: ''
-            }
-            return {
-                ...state,
-                auth: newAuth
-            }
-        }
-
-        case actionTypes.SIGN_UP_SUCCESS:{
-            const newAuth = {...state.auth,
+        case actionTypes.LOG_IN_SUCCESS: {
+            const newAuth = {
+                ...state.auth,
                 isLoggedIn: true,
                 loggedInUser: action.email
             }
@@ -64,8 +43,9 @@ export const reducer = (state = initialState, action) => {
             }
         }
 
-        case actionTypes.SIGN_UP_ERROR:{
-            const newAuth = {...state.auth,
+        case actionTypes.LOG_IN_ERROR: {
+            const newAuth = {
+                ...state.auth,
                 isLoggedIn: false,
                 loggedInUser: ''
             }
@@ -75,8 +55,21 @@ export const reducer = (state = initialState, action) => {
             }
         }
 
-        case actionTypes.LOG_OUT_SUCCESS:{
-            const newAuth = {...state.auth,
+        case actionTypes.SIGN_UP_SUCCESS: {
+            const newAuth = {
+                ...state.auth,
+                isLoggedIn: true,
+                loggedInUser: action.email
+            }
+            return {
+                ...state,
+                auth: newAuth
+            }
+        }
+
+        case actionTypes.SIGN_UP_ERROR: {
+            const newAuth = {
+                ...state.auth,
                 isLoggedIn: false,
                 loggedInUser: ''
             }
@@ -86,8 +79,21 @@ export const reducer = (state = initialState, action) => {
             }
         }
 
-        case actionTypes.CHECK_AUTH_SUCCESS:{
-            const newAuth = {...state.auth,
+        case actionTypes.LOG_OUT_SUCCESS: {
+            const newAuth = {
+                ...state.auth,
+                isLoggedIn: false,
+                loggedInUser: ''
+            }
+            return {
+                ...state,
+                auth: newAuth
+            }
+        }
+
+        case actionTypes.CHECK_AUTH_SUCCESS: {
+            const newAuth = {
+                ...state.auth,
                 userId: action.id,
                 loggedInUser: action.email
             }
@@ -96,7 +102,16 @@ export const reducer = (state = initialState, action) => {
                 auth: newAuth
             }
         }
-
+        case actionTypes.CHECK_AUTH_ERROR: {
+            return {
+                ...state,
+                auth: {
+                    userId: null,
+                    loggedInUser: "",
+                    isLoggedIn: false
+                }
+            }
+        }
         default:
             return state
     }
