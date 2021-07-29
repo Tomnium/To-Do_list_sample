@@ -5,7 +5,8 @@ const initialState = {
     auth: {
         isLoggedIn: false,
         email: '',
-        userId: ''
+        userId: '',
+        formError: false
     }
 }
 
@@ -37,40 +38,44 @@ export const reducer = (state = initialState, action) => {
                 auth: {
                     isLoggedIn: true,
                     email: action.email,
-                    userId: action.userId
+                    userId: action.userId,
+                    formError: false
                 }
             }
         }
 
         case actionTypes.LOG_IN_ERROR: {
             return {
-                ...state,
+                data: {},
                 auth: {
                     isLoggedIn: false,
                     email: '',
-                    userId: ''
+                    userId: '',
+                    formError: true
                 }
             }
         }
 
         case actionTypes.SIGN_UP_SUCCESS: {
             return {
-                ...state,
+                data: {},
                 auth: {
                     isLoggedIn: true,
                     email: action.email,
-                    userId: action.userId
+                    userId: action.userId,
+                    formError: false
                 }
             }
         }
 
         case actionTypes.SIGN_UP_ERROR: {
             return {
-                ...state,
+                data: {},
                 auth:  {
                     isLoggedIn: false,
                     email: '',
-                    userId: ''
+                    userId: '',
+                    formError: true
                 }
             }
         }
@@ -81,7 +86,8 @@ export const reducer = (state = initialState, action) => {
                 auth: {
                     isLoggedIn: false,
                     email: '',
-                    userId: ''
+                    userId: '',
+                    formError: false
                 }
             }
         }
@@ -92,7 +98,8 @@ export const reducer = (state = initialState, action) => {
                 auth: {
                     isLoggedIn: true,
                     email: action.email,
-                    userId: action.userId
+                    userId: action.userId,
+                    formError: false
                 }
             }
         }
@@ -102,8 +109,27 @@ export const reducer = (state = initialState, action) => {
                 auth: {
                     userId: '',
                     email: "",
-                    isLoggedIn: false
+                    isLoggedIn: false,
+                    formError: false
                 }
+            }
+        }
+        case actionTypes.CHECK_FORM_ERROR:{
+            const newAuth = {...state.auth,
+                        formError: true
+            }
+            return {
+                ...state,
+                auth: newAuth
+            }
+        }
+        case actionTypes.CHECK_FORM_SUCCESS:{
+            const newAuth = {...state.auth,
+                        formError: false
+            }
+            return {
+                ...state,
+                auth: newAuth
             }
         }
         default:

@@ -1,7 +1,7 @@
 import React from 'react'
 import './Header.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useHistory, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { logOutStart } from '../../redux/actions'
 
 export const Header = () => {

@@ -9,7 +9,7 @@ const logInUser = async (req, res) => {
         const tasks = await getList(user.dataValues.id)
         res.status(200).cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true }).json({ isLogined: true, user, ...tokens, tasks })
     } catch (e) {
-        res.status(404).json({ didLogIn: false, error: e.message })
+        res.status(409).json({ didLogIn: false, error: e.message })
     }
 }
 

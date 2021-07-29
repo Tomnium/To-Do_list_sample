@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './AuthForm.css'
 import { Link, useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 export const AuthForm = props => {
     const history = useHistory();
@@ -19,13 +19,17 @@ export const AuthForm = props => {
         setPassword(event.target.value)
     }
 
-
     const handleSubmit = (event) => {
-        event.preventDefault()
-        dispatch(action(email, password))
-        setEmail('')
-        setPassword('')
-        history.push('/tasks')
+        try {
+            event.preventDefault()
+            dispatch(action(email, password)).then(res => {
+                setEmail('')
+                setPassword('')
+                history.push('/tasks')
+            }).catch(e => alert(e.message))
+        } catch (e) {
+            alert(e)
+        }
     }
 
     return (

@@ -1,4 +1,4 @@
-import Axios, { apiURL } from '../axios'
+import Axios from '../axios'
 import * as actionTypes from './actionTypes'
 
 export const dataLoadStart = (userId) => {
@@ -126,15 +126,15 @@ export const signUpStart = (email, password) => {
                 signUpSuccess(response) :
                 signUpError()
             )
-        } catch {
+        } catch(e) {
             dispatch(signUpError())
+            throw new Error(e)
         }
     }
 }
 
 const signUpSuccess = (response) => {
     const { user, accessToken } = response.data;
-
     localStorage.setItem('token', accessToken)
     // window.location.replace('/tasks')
     return {
@@ -154,24 +154,22 @@ export const logInStart = (email, password) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.LOG_IN_START })
-            const response = await Axios.post('/auth/log-in', { email, password })
+            const response = await Axios.post('/auth/log-in', { email, password }) // .catch(err=>{throw new Error(err)})
             dispatch(response.status < 400 ?
                 logInSuccess(response) :
                 logInError()
             )
-        } catch {
+        } catch(e) {
             dispatch(logInError())
+            throw new Error(e)
         }
     }
 }
 
 const logInSuccess = (response) => {
     const { user, accessToken, tasks} = response.data;
-
     localStorage.setItem('token', accessToken)
-
     // window.location.replace('/tasks')
-
     return {
         type: actionTypes.LOG_IN_SUCCESS,
         email: user.email, 
@@ -202,7 +200,6 @@ export const logOutStart = () => {
 
 const logOutSuccess = () => {
     localStorage.removeItem('token')
-
     // window.location.replace('/auth/log-in')
     return {
         type: actionTypes.LOG_OUT_SUCCESS

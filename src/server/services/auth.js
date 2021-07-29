@@ -31,7 +31,7 @@ const logIn = async (email, password) => {
         }
     })
 
-    if (!user) return Promise.reject(new Error("User does't exist"))
+    if (!user) return Promise.reject(new Error("User with such email does't exist"))
     const tokens = await tokenService.generateTokens(user);
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
