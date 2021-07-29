@@ -7,6 +7,9 @@ import thunk from 'redux-thunk'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Header, List, LoginForm, SignUpForm } from './components'
 import { signUpStart, logInStart, checkUserAuthStart } from './redux/actions'
+// import AuthComponent from './components/Auth'
+import privateRoute from './utils'
+import Home from './components/Home'
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 const store = createStore(reducer, composeEnhancers(
@@ -26,15 +29,17 @@ const App = () => {
       <div className="App">
         <BrowserRouter>
           <Switch>
+            {
+              privateRoute()
+            }
               
-            <Route exact path="/" render={() => {
-                return ( isLogedIn ?
-                    <Redirect to='/tasks' /> :
-                    <Redirect to='/auth/log-in' />)}}
-            />
-            <Route exact path='/auth/log-in' component={LoginForm} />
-            <Route exact path='/auth/sign-up' component={SignUpForm} />
-            <Route exact path="/tasks" render={()=><><Header /><List /></>} />
+            {/* <Route exact path="/" component={AuthComponent} */}
+            {/* /> */}
+            <Route exact path='/' component={Home} />
+
+            {/* <Route exact path='/auth/sign-up' component={SignUpForm} /> */}
+           
+            
             <Redirect to='/' />
 
           </Switch>
