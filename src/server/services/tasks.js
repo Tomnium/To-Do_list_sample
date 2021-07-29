@@ -1,7 +1,7 @@
 const { Task } = require('../db/models')
 
-const getList = async () => {
-    const tasks = await Task.findAll()
+const getList = async (userId) => {
+    const tasks = await Task.findAll({where:{userId}})
     const parsedTasks = tasks.reduce((prev, result) => {
         prev[result.id] = result.text
         return prev

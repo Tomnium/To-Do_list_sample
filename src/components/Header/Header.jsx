@@ -6,7 +6,7 @@ import { logOutStart } from '../../redux/actions'
 
 export const Header = () => {
     const history = useHistory()
-    const { isLoggedIn, loggedInUser } = useSelector(state => state.auth)
+    const { isLoggedIn, email } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const handleLogOut = () => {
@@ -18,7 +18,7 @@ export const Header = () => {
     return (
         <div className="header-container">
             {
-                isLoggedIn ? <p className="username">Logged in as {loggedInUser}</p> : <div></div>
+                isLoggedIn ? <p className="username">Logged in as {email}</p> : <div></div>
             }
             {
                 // isLoggedIn ?

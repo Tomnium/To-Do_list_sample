@@ -11,11 +11,11 @@ export const ListItem = React.memo((props) => {
     const dispatch = useDispatch()
 
     const handleRename = () => {
-        dispatch(actions.renameItemStart(props.serverId, newName))
+        dispatch(actions.renameItemStart(props.taskId, newName, props.userId))
     }
 
     const handleDelete = () => {
-        dispatch(actions.deleteItemStart(props.serverId))
+        dispatch(actions.deleteItemStart(props.taskId, props.userId))
     }
 
     return (

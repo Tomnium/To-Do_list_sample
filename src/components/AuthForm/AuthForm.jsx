@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './AuthForm.css'
 import { Link, useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const AuthForm = props => {
     const history = useHistory();
@@ -26,7 +26,6 @@ export const AuthForm = props => {
         setEmail('')
         setPassword('')
         history.push('/tasks')
-
     }
 
     return (

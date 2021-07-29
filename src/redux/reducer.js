@@ -3,9 +3,9 @@ import * as actionTypes from './actionTypes'
 const initialState = {
     data: {},
     auth: {
-        isLoggedIn: localStorage.getItem('token') !== '',
-        loggedInUser: localStorage.getItem('loggedInUserEmail'),
-        userId: null
+        isLoggedIn: false,
+        email: '',
+        userId: ''
     }
 }
 
@@ -32,82 +32,76 @@ export const reducer = (state = initialState, action) => {
                 data: action.data
             }
         case actionTypes.LOG_IN_SUCCESS: {
-            const newAuth = {
-                ...state.auth,
-                isLoggedIn: true,
-                loggedInUser: action.email
-            }
             return {
-                ...state,
-                auth: newAuth
+                data: action.tasks,
+                auth: {
+                    isLoggedIn: true,
+                    email: action.email,
+                    userId: action.userId
+                }
             }
         }
 
         case actionTypes.LOG_IN_ERROR: {
-            const newAuth = {
-                ...state.auth,
-                isLoggedIn: false,
-                loggedInUser: ''
-            }
             return {
                 ...state,
-                auth: newAuth
+                auth: {
+                    isLoggedIn: false,
+                    email: '',
+                    userId: ''
+                }
             }
         }
 
         case actionTypes.SIGN_UP_SUCCESS: {
-            const newAuth = {
-                ...state.auth,
-                isLoggedIn: true,
-                loggedInUser: action.email
-            }
             return {
                 ...state,
-                auth: newAuth
+                auth: {
+                    isLoggedIn: true,
+                    email: action.email,
+                    userId: action.userId
+                }
             }
         }
 
         case actionTypes.SIGN_UP_ERROR: {
-            const newAuth = {
-                ...state.auth,
-                isLoggedIn: false,
-                loggedInUser: ''
-            }
             return {
                 ...state,
-                auth: newAuth
+                auth:  {
+                    isLoggedIn: false,
+                    email: '',
+                    userId: ''
+                }
             }
         }
 
         case actionTypes.LOG_OUT_SUCCESS: {
-            const newAuth = {
-                ...state.auth,
-                isLoggedIn: false,
-                loggedInUser: ''
-            }
             return {
                 ...state,
-                auth: newAuth
+                auth: {
+                    isLoggedIn: false,
+                    email: '',
+                    userId: ''
+                }
             }
         }
 
         case actionTypes.CHECK_AUTH_SUCCESS: {
-            const newAuth = {
-                ...state.auth,
-                userId: action.id,
-                loggedInUser: action.email
-            }
             return {
-                ...state,
-                auth: newAuth
+                data: action.tasks,
+                auth: {
+                    isLoggedIn: true,
+                    email: action.email,
+                    userId: action.userId
+                }
             }
         }
         case actionTypes.CHECK_AUTH_ERROR: {
             return {
                 ...state,
                 auth: {
-                    userId: null,
-                    loggedInUser: "",
+                    userId: '',
+                    email: "",
                     isLoggedIn: false
                 }
             }

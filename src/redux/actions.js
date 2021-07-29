@@ -1,11 +1,11 @@
 import Axios, { apiURL } from '../axios'
 import * as actionTypes from './actionTypes'
 
-export const dataLoadStart = () => {
+export const dataLoadStart = (userId) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DATA_LOAD_START })
-            const response = await Axios.get('/tasks/list')
+            const response = await Axios.get(`/tasks/list/${userId}`)
             dispatch(response.status < 400 ?
                 dataLoadSuccess(response.data) :
                 dataLoadError()
@@ -29,11 +29,11 @@ const dataLoadError = () => {
     }
 }
 
-export const addItemStart = (userID, text) => {
+export const addItemStart = (userId, text) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.ADD_ITEM_START })
-            const response = await Axios.post(`/tasks/item`, { userID, text })
+            const response = await Axios.post(`/tasks/item`, { userId, text })
             dispatch(response.status < 400 ?
                 addItemSuccess(response.data) :
                 addItemError()
@@ -57,11 +57,13 @@ const addItemError = () => {
     }
 }
 
-export const renameItemStart = (id, newText) => {
+export const renameItemStart = (id, newText, userId) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.RENAME_ITEM_START })
-            const response = await Axios.put(`/tasks/item/${id}`, { text: newText })
+            const params = JSON.stringify({usr:userId, id})
+
+            const response = await Axios.put(`/tasks/item/${params}`, { text: newText })
             dispatch(response.status < 400 ?
                 renameItemSuccess(response.data) :
                 renameItemError()
@@ -85,11 +87,13 @@ const renameItemError = () => {
     }
 }
 
-export const deleteItemStart = (id) => {
+export const deleteItemStart = (id, userId) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DELETE_ITEM_START })
-            const response = await Axios.delete(`/tasks/item/${id}`)
+            const params = JSON.stringify({usr:userId, id})
+
+            const response = await Axios.delete(`/tasks/item/${params}`)
             dispatch(response.status < 400 ?
                 deleteItemSuccess(response.data) :
                 deleteItemError()
@@ -129,15 +133,14 @@ export const signUpStart = (email, password) => {
 }
 
 const signUpSuccess = (response) => {
-    const { loggedInUser, accessToken } = response.data;
+    const { user, accessToken } = response.data;
 
     localStorage.setItem('token', accessToken)
-    localStorage.setItem('loggedInUserEmail', loggedInUser)
-
     // window.location.replace('/tasks')
     return {
         type: actionTypes.SIGN_UP_SUCCESS,
-        email: loggedInUser
+        email: user.email, 
+        userId: user.id
     }
 }
 
@@ -152,7 +155,6 @@ export const logInStart = (email, password) => {
         try {
             dispatch({ type: actionTypes.LOG_IN_START })
             const response = await Axios.post('/auth/log-in', { email, password })
-
             dispatch(response.status < 400 ?
                 logInSuccess(response) :
                 logInError()
@@ -164,16 +166,17 @@ export const logInStart = (email, password) => {
 }
 
 const logInSuccess = (response) => {
-    const { loggedInUser, refreshToken, accessToken } = response.data;
+    const { user, accessToken, tasks} = response.data;
 
-    localStorage.setItem('loggedInUserEmail', loggedInUser)
     localStorage.setItem('token', accessToken)
 
     // window.location.replace('/tasks')
 
     return {
         type: actionTypes.LOG_IN_SUCCESS,
-        email: loggedInUser
+        email: user.email, 
+        userId: user.id, 
+        tasks
     }
 }
 
@@ -199,7 +202,6 @@ export const logOutStart = () => {
 
 const logOutSuccess = () => {
     localStorage.removeItem('token')
-    localStorage.removeItem('loggedInUserEmail')
 
     // window.location.replace('/auth/log-in')
     return {
@@ -219,9 +221,10 @@ export const checkUserAuthStart = () => {
             dispatch({ type: actionTypes.CHECK_AUTH_START })
 
             const response = await Axios.post(`/auth/user`)
-            dispatch(response.status == 200 ?
-                checkUserSuccess(response.data.data) :
+            dispatch(response.status === 200 ?
+                checkUserSuccess(response.data) :
                 checkUserError())
+            // if(response.status === 200) dispatch({type: actionTypes.DATA_LOAD_START})
         } catch {
             dispatch(checkUserError())
         }
@@ -229,11 +232,13 @@ export const checkUserAuthStart = () => {
 }
 
 const checkUserSuccess = (data) => {
-    const { id, email } = data;
+    const { id, email } = data.data
+    const {tasks} = data
     return {
         type: actionTypes.CHECK_AUTH_SUCCESS,
-        id,
-        email
+        userId: id,
+        email,
+        tasks
     }
 }
 

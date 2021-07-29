@@ -14,9 +14,9 @@ const schema = Joi
     .required()
     .min(1)
 
-router.get('/list', getFullList)
+router.get('/list/:id',  getFullList)
 router.post('/item', validate(schema), addTask)
-router.put('/item/:id', validate(schema), updateTask)
-router.delete('/item/:id', deleteTask)
+router.put('/item/:data', validate(schema), updateTask)
+router.delete('/item/:data', deleteTask)
 
 module.exports = router

@@ -20,7 +20,7 @@ const createUser = async (email, password) => {
     // const variable = await tokenService.saveToken(user.id, tokens.refreshToken);
 
     return created ?
-        Promise.resolve({userEmail:user.email, ...tokens}) :
+        Promise.resolve({user, ...tokens}) :
         Promise.reject(new Error("Already exists"))
 }
 
@@ -37,7 +37,7 @@ const logIn = async (email, password) => {
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     return isPasswordValid ?
-        Promise.resolve({userEmail: user.email, ...tokens}) :
+        Promise.resolve({user, ...tokens}) :
         Promise.reject(new Error("Invalid password"))
 }
 
