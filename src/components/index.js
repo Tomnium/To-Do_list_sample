@@ -6,4 +6,6 @@ export { Header } from './Header/Header'
 export { LoginForm } from './AuthForm/LogInForm'
 export { SignUpForm } from './AuthForm/SignUpForm'
 
+
+export { AuthFinalForm } from './AuthForm/AuthFinalForm'
 export {default as PrivateAutorized} from './Routers/PrivateAutorized'

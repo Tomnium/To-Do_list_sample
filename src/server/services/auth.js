@@ -17,8 +17,6 @@ const createUser = async (email, password) => {
     })
 
     const tokens = await tokenService.generateTokens(user);
-    // const variable = await tokenService.saveToken(user.id, tokens.refreshToken);
-
     return created ?
         Promise.resolve({user, ...tokens}) :
         Promise.reject(new Error("This email address has already been registered."))
@@ -41,7 +39,18 @@ const logIn = async (email, password) => {
         Promise.reject(new Error("Invalid password"))
 }
 
+const checkEmail = async(email) => {
+    const user = await User.findOne({where:{email}})
+    
+    if(user){
+        return Promise.resolve({user})
+    } else{
+        return Promise.reject(new Error("This email address has not been registered."))
+    }
+}
+
 module.exports = {
     createUser,
-    logIn
+    logIn,
+    checkEmail
 }

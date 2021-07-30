@@ -30,11 +30,7 @@ const App = () => {
       <div className="App">
         <BrowserRouter>
           <Switch>
-            {/* <Route exact path='/' component={Home} /> */}
             <PrivateRouteOwn />
-            {/* <Route exact path="/" component={AuthComponent} */}
-            {/* /> */}
-            {/* <Redirect to='/' /> */}
           </Switch>
         </BrowserRouter>
       </div>

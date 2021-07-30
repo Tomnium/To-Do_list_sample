@@ -1,9 +1,10 @@
 import { logInStart } from "../../redux/actions"
+import { AuthFinalForm } from "./AuthFinalForm"
 import { AuthForm } from "./AuthForm"
 
 
 export const LoginForm = () => {
     return (
-        <AuthForm title="log in" action={logInStart} />
+        <AuthFinalForm title="log in" action={logInStart} />
     )
 }

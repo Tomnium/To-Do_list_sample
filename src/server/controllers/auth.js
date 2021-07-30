@@ -1,4 +1,4 @@
-const { logIn, createUser } = require('../services/auth')
+const { logIn, createUser, checkEmail } = require('../services/auth')
 const { getList } = require('../services/tasks')
 
 const logInUser = async (req, res) => {
@@ -31,8 +31,20 @@ const logOutUser = async (req, res) => {
     }
 }
 
+const checkNewEmail = async(req, res) => {
+    try{
+        const { email } = req.body
+        const user = await checkEmail(email)
+
+        res.status(200).json({emailIsRegistred: true, user})
+    } catch(e){
+        res.status(403).json({emailIsRegistred: false, error: e.message})
+    }
+}
+
 module.exports = {
     logInUser,
     signUpUser,
-    logOutUser
+    logOutUser,
+    checkNewEmail
 }

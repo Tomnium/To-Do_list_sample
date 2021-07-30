@@ -31,6 +31,7 @@ const chechUserAuth = async(req, res) => {
         res.status(403).json({userIsAuth: false, message:e.message? e.message:"Exception occured"})
     } 
 }
+
 module.exports = {
     refreshTokens,
     chechUserAuth
