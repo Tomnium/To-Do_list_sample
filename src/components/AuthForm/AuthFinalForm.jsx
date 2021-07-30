@@ -31,22 +31,35 @@ const customEmailCheck = (title) => async value => {
 }
 
 export const AuthFinalForm = props => {
+  const history = useHistory()
+  const dispatch = useDispatch()
+
+  const buttonRef = React.useRef()
+
+  window.buttonRef = buttonRef;
 
   const { title, action } = props
 
-  const handleSubmit = (values) => {
-    return 1
+  const onSubmit = (values) => {
+    { debugger }
+    console.log(values)
+    dispatch(action(values.email, values.password)).then(() => {
+      history.push('/tasks')
+    }).catch(err => {
+      const message = err?.response?.data?.message;
+      alert(message)
+    })
   }
 
   return (
     <div className="form-container">
       <Form
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
         initialValues={{ email: '', password: '' }}
 
-        render={({ form, submitting, pristine, values }) => (
-          <form>
-            <p className="title">New FORM {title}</p>
+        render={({ handleSubmit, form, submitting, pristine, values }) => (
+          <form onSubmit={handleSubmit}>
+            <p className="title">{title}</p>
             <label>
               Email
               <Field
@@ -64,6 +77,7 @@ export const AuthFinalForm = props => {
                     {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}</>
                 )}
               </Field>
+
             </label>
             <label>
               <span>Password</span>
@@ -85,8 +99,9 @@ export const AuthFinalForm = props => {
               <p className="link-text">Don't have an account? <Link className="link" to="sign-up">Sign Up</Link></p> :
               <p className="link-text">Already have an account? <Link className="link" to="log-in">Log In</Link></p>
             }
-            <button className="submit-link" type="submit" disabled={submitting || pristine}>{title}</button>
-            <pre>{JSON.stringify(values, 0, 2)}</pre>
+            <button className="submit-link" type="submit" disabled={submitting} ref={buttonRef}>{title}</button>
+            {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
+            {/* <pre>submitting{submitting || pristine}</pre> */}
           </form>
         )}
       />

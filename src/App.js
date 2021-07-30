@@ -9,7 +9,6 @@ import { Header, List, LoginForm, SignUpForm } from './components'
 import { signUpStart, logInStart, checkUserAuthStart } from './redux/actions'
 // import AuthComponent from './components/Auth'
 import privateRoute from './utils'
-import Home from './components/Home'
 import PrivateRouteOwn from './utils/PrivateRoute'
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
