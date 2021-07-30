@@ -126,9 +126,9 @@ export const signUpStart = (email, password) => {
                 signUpSuccess(response) :
                 signUpError()
             )
-        } catch(e) {
+        } catch(error) {
             dispatch(signUpError())
-            throw new Error(e)
+            throw error
         }
     }
 }
@@ -154,14 +154,14 @@ export const logInStart = (email, password) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.LOG_IN_START })
-            const response = await Axios.post('/auth/log-in', { email, password }) // .catch(err=>{throw new Error(err)})
+            const response = await Axios.post('/auth/log-in', { email, password })
             dispatch(response.status < 400 ?
                 logInSuccess(response) :
                 logInError()
             )
-        } catch(e) {
+        } catch(error) {
             dispatch(logInError())
-            throw new Error(e)
+            throw error
         }
     }
 }

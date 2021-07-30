@@ -1,6 +1,5 @@
 const { logIn, createUser } = require('../services/auth')
 const { getList } = require('../services/tasks')
-// const { request } = require("express");
 
 const logInUser = async (req, res) => {
     try {
@@ -8,8 +7,8 @@ const logInUser = async (req, res) => {
         const { user, ...tokens } = await logIn(email, password)
         const tasks = await getList(user.dataValues.id)
         res.status(200).cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true }).json({ isLogined: true, user, ...tokens, tasks })
-    } catch (e) {
-        res.status(409).json({ didLogIn: false, error: e.message })
+    } catch (error) {
+        res.status(409).send({ didLogIn: false, message: error.message })
     }
 }
 
@@ -19,8 +18,8 @@ const signUpUser = async (req, res) => {
         const { user, ...tokens } = await createUser(email, password)
         res.status(200).cookie('refreshToken', tokens.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true}).json({ didLogIn: true, user  , ...tokens})
 
-    } catch (e) {
-        res.status(409).json({ didLogIn: false, error: e.message })
+    } catch (error) {
+        res.status(409).send({ didLogIn: false, message: error.message })
     }
 }
 

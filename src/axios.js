@@ -18,7 +18,6 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
     res => res,
     (async (error) => {
-        console.log(error)
         const originalRequest = error.config;
         if (error.response.status === 401 && originalRequest && !originalRequest._isReady) {
             originalRequest._isReady = true;
@@ -30,10 +29,13 @@ Axios.interceptors.response.use(
             } catch (error) {
                 console.log(error)
             }
-        }  else if(error.response.status === 409){
-            throw new Error(error)
-        }
-        return error
+        }  
+        // else if(error.response.status === 409){
+        //     console.log(`AXIOS: `)
+        //     console.log(error)
+        //     throw new Error(error)
+        // }
+        throw error
     })
 )
 

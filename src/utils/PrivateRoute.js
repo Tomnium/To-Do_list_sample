@@ -6,7 +6,6 @@ const PrivateRouteOwn = () => {
   // todo if login
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
 
-  console.log(isLoggedIn)
   if (isLoggedIn) {
     return (
       <Switch>

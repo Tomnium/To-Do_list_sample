@@ -20,16 +20,17 @@ export const AuthForm = props => {
     }
 
     const handleSubmit = (event) => {
-        try {
-            event.preventDefault()
-            dispatch(action(email, password)).then(res => {
-                setEmail('')
-                setPassword('')
-                history.push('/tasks')
-            }).catch(e => alert(e.message))
-        } catch (e) {
-            alert(e)
-        }
+        event.preventDefault()
+
+        dispatch(action(email, password)).then(() => {
+            setEmail('')
+            history.push('/tasks')
+        }).catch(err => {
+            const message = err?.response?.data?.message;
+            alert(message)
+        }).finally(() => {
+            setPassword('')
+        })
     }
 
     return (

@@ -21,7 +21,7 @@ const createUser = async (email, password) => {
 
     return created ?
         Promise.resolve({user, ...tokens}) :
-        Promise.reject(new Error("Already exists"))
+        Promise.reject(new Error("This email address has already been registered."))
 }
 
 const logIn = async (email, password) => {
