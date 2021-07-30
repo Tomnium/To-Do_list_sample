@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './AuthForm.css'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 export const AuthForm = props => {
     const history = useHistory();
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
 
     const dispatch = useDispatch()
     const { title, action } = props

@@ -11,6 +11,10 @@
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 }
 
+.list-item:hover{
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
+}
+
 .list-item-icon {
     margin: 5px;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './List.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { ListItem } from '../'
@@ -9,14 +9,18 @@ export const List = () => {
     const dispatch = useDispatch()
     const data = useSelector(state => state.data)
     const { userId } = useSelector(state => state.auth)
-    const [text, setText] = useState('')
+    const [text, setText] = React.useState('')
 
-    // useEffect(() => {
+    const inputRef = React.useRef()
+
+    // React.useEffect(() => {
     //     dispatch(actions.dataLoadStart(userId))
     // }, [dispatch])
 
     const handleAdd = () => {
         dispatch(actions.addItemStart(userId, text))
+        setText('')
+        inputRef.current.focus()
     }
 
     const handleTextChange = e => {
@@ -30,7 +34,7 @@ export const List = () => {
                 <div className="no-items">No items</div>}
             <div className="add-new">
                 <form className="item-form new-item-form">
-                    <input type="text" value={text} onChange={handleTextChange} autoFocus />
+                    <input type="text" value={text} onChange={handleTextChange} autoFocus ref={inputRef} />
                     <AddCircleIcon className="submit-icon" onClick={handleAdd} />
                 </form>
             </div>
