@@ -1,7 +1,7 @@
 import './App.css'
 import React from 'react'
 import { createStore, applyMiddleware, compose } from 'redux'
-import { Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import { reducer } from './redux/reducer'
 import thunk from 'redux-thunk'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { signUpStart, logInStart, checkUserAuthStart } from './redux/actions'
 // import AuthComponent from './components/Auth'
 import privateRoute from './utils'
 import Home from './components/Home'
+import PrivateRouteOwn from './utils/PrivateRoute'
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 const store = createStore(reducer, composeEnhancers(
@@ -29,19 +30,11 @@ const App = () => {
       <div className="App">
         <BrowserRouter>
           <Switch>
-            {
-              privateRoute()
-            }
-              
+            {/* <Route exact path='/' component={Home} /> */}
+            <PrivateRouteOwn />
             {/* <Route exact path="/" component={AuthComponent} */}
             {/* /> */}
-            <Route exact path='/' component={Home} />
-
-            {/* <Route exact path='/auth/sign-up' component={SignUpForm} /> */}
-           
-            
-            <Redirect to='/' />
-
+            {/* <Redirect to='/' /> */}
           </Switch>
         </BrowserRouter>
       </div>
@@ -50,3 +43,13 @@ const App = () => {
 }
 
 export default App
+
+
+// {
+//   privateRoute()
+// }
+// {/* <Route exact path="/" component={AuthComponent} */}
+// {/* /> */}
+// <Route exact path='/' component={Home} />
+// {/* <Route exact path='/auth/sign-up' component={SignUpForm} /> */}
+// <Redirect to='/' />
