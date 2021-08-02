@@ -3,7 +3,7 @@ import { AuthFinalForm } from "./AuthFinalForm"
 import { AuthForm } from "./AuthForm"
 
 
-export const LoginForm = () => {
+export const LogInForm = () => {
     return (
         <AuthFinalForm title="log in" action={logInStart} />
     )
