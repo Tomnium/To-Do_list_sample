@@ -24,7 +24,7 @@ const customEmailCheck = async (title, value) => {
   if (title === "log in") { return undefined }
   try {
     await asyncFunctionDebounced(value)
-    return {email:'This email has already been registered'}
+    return { email: 'This email has already been registered' }
   } catch (error) {
     return undefined
   }
@@ -53,19 +53,19 @@ export const AuthFinalForm = props => {
       <Form
         onSubmit={onSubmit}
         initialValues={{ email: '', password: '' }}
-        validate={async values =>{
+        validate={async values => {
           const errors = {}
-          if(!values.email){
+          if (!values.email) {
             errors.email = "Required field"
-          } else if(!/\S+@\S+\.\S+/.test(values.email)){
+          } else if (!/\S+@\S+\.\S+/.test(values.email)) {
             errors.email = "Enter correct email"
           }
-          if(!values.password){
+          if (!values.password) {
             errors.password = "Required field"
-          } else if(values.password.length < 4){
+          } else if (values.password.length < 4) {
             errors.password = `Length should be greater than 4`
           }
-          return Object.keys(errors).length?errors:(await customEmailCheck(title, values.email))
+          return Object.keys(errors).length ? errors : (await customEmailCheck(title, values.email))
         }}
         render={({ handleSubmit, form, submitting, pristine, values, validating }) => (
           <form onSubmit={handleSubmit}>
