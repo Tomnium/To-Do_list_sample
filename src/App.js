@@ -4,11 +4,8 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { reducer } from './redux/reducer'
 import thunk from 'redux-thunk'
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
-import { Header, List, LoginForm, SignUpForm } from './components'
-import { signUpStart, logInStart, checkUserAuthStart } from './redux/actions'
-// import AuthComponent from './components/Auth'
-import privateRoute from './utils'
+import { BrowserRouter,  Switch } from 'react-router-dom'
+import { checkUserAuthStart } from './redux/actions'
 import PrivateRouteOwn from './utils/PrivateRoute'
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
@@ -17,9 +14,6 @@ const store = createStore(reducer, composeEnhancers(
 ))
 
 const App = () => {
-
-  const { isLogedIn } = store.getState().auth;
-
   React.useEffect(() => {
     store.dispatch(checkUserAuthStart())
   }, [])

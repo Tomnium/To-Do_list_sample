@@ -7,16 +7,6 @@ import Axios from '../../axios'
 import _ from 'lodash'
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
-const required = value => (value ? undefined : 'Required')
-
-const minLength = min => value =>
-  value.length >= min ? undefined : `Length should be greater than ${min}`
-
-const composeValidators = (...validators) => value =>
-  validators.reduce((error, validator) => error || validator(value), undefined)
-
-const emailRegEx = () => value => (/\S+@\S+\.\S+/.test(value) ? undefined : 'Enter correct email')
-
 const asyncFunction = (value) => Axios.post(`/auth/check-email`, { email: value.trim() })
 
 const asyncFunctionDebounced = AwesomeDebouncePromise(asyncFunction, 1000);
@@ -36,10 +26,7 @@ export const AuthFinalForm = props => {
 
   const { title, action } = props
 
-  console.log(action);
-
   const onSubmit = (values) => {
-    // alert({...values})
     dispatch(action(values.email, values.password)).then(() => {
       history.push('/tasks')
     }).catch(err => {
@@ -53,7 +40,7 @@ export const AuthFinalForm = props => {
       <Form
         onSubmit={onSubmit}
         initialValues={{ email: '', password: '' }}
-        validate={async values => {
+        validate={values => {
           const errors = {}
           if (!values.email) {
             errors.email = "Required field"
@@ -65,7 +52,7 @@ export const AuthFinalForm = props => {
           } else if (values.password.length < 4) {
             errors.password = `Length should be greater than 4`
           }
-          return Object.keys(errors).length ? errors : (await customEmailCheck(title, values.email))
+          return Object.keys(errors).length ? errors : customEmailCheck(title, values.email)
         }}
         render={({ handleSubmit, form, submitting, pristine, values, validating }) => (
           <form onSubmit={handleSubmit}>
@@ -105,7 +92,7 @@ export const AuthFinalForm = props => {
               <p className="link-text">Don't have an account? <Link className="link" to="sign-up">Sign Up</Link></p> :
               <p className="link-text">Already have an account? <Link className="link" to="log-in">Log In</Link></p>
             }
-            <button className="submit-link" type="submit" disabled={submitting} >{title}</button>
+            <button className="submit-link" type="submit" disabled={submitting || validating} >{title}</button>
             {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
           </form>
         )}

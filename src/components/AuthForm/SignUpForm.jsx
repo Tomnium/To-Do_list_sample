@@ -1,6 +1,5 @@
-import { logInStart, signUpStart } from "../../redux/actions"
+import { signUpStart } from "../../redux/actions"
 import { AuthFinalForm } from "./AuthFinalForm"
-import { AuthForm } from "./AuthForm"
 
 
 export const SignUpForm = () => {
