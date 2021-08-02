@@ -1,5 +1,3 @@
-const { v4: uuid } = require('uuid')
-
 const {
     getList,
     addItem,
@@ -7,16 +5,14 @@ const {
     deleteItem
 } = require('../services/tasks')
 
-const creationDate = Date.now()
-
 const sendList = async (res, id) => {
     const tasks = await getList(id)
-    
     res.json(tasks)
 }
 
 const getFullList = async (req, res) => {
-    const id = req.params.id
+    // const id = req.params.id
+    const { id } = req.query
     await sendList(res, id)
 }
 
@@ -27,16 +23,17 @@ const addTask = async (req, res) => {
 }
 
 const updateTask = async (req, res) => {
-    const {usr, id} = JSON.parse(req.params.data)
+    // const {userId, taskId} = JSON.parse(req.params.data)
+    const {userId, taskId} = req.query
     const { text } = req.body
-    await updateItem(id, text)
-    await sendList(res, usr)
+    await updateItem(taskId, text)
+    await sendList(res, userId)
 }
 
 const deleteTask = async (req, res) => {
-    const {usr, id} = JSON.parse(req.params.data)
-    await deleteItem(id)
-    await sendList(res, usr)
+    const {userId, taskId} = req.query
+    await deleteItem(taskId)
+    await sendList(res, userId)  
 }
 
 module.exports = {

@@ -6,7 +6,7 @@ const getList = async (userId) => {
         prev[result.id] = result.text
         return prev
     }, {})
-    return Promise.resolve(parsedTasks)
+    return parsedTasks
 }
 
 const addItem = async (userId, item) => {

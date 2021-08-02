@@ -7,16 +7,16 @@ const {
     updateTask,
     deleteTask
 } = require('../controllers/tasks')
-const { validate } = require('../middlewares/validate')
 
-const schema = Joi
-    .string()
-    .required()
-    .min(1)
+const {  validateMiddleware } = require('../middlewares/validate')
 
-router.get('/list/:id',  getFullList)
-router.post('/item', validate(schema), addTask)
-router.put('/item/:data', validate(schema), updateTask)
-router.delete('/item/:data', deleteTask)
+const schema = Joi.object({
+    text: Joi.string().min(3).required(),
+}).unknown()
+
+router.get('/list',  getFullList)
+router.post('/item', validateMiddleware(schema, "body"), addTask)
+router.put('/item', validateMiddleware(schema, "body"), updateTask)
+router.delete('/item', deleteTask)
 
 module.exports = router

@@ -8,37 +8,37 @@ const generateTokens = async ({ id, email }) => {
   const accessToken = jwt.sign({ id, email }, access_secret, { expiresIn: "30s" })
   const refreshToken = jwt.sign({ id, email }, refresh_secret, { expiresIn: "30d" })
 
-  return Promise.resolve({ accessToken, refreshToken })
+  return { accessToken, refreshToken }
 }
 
 const validateAccessToken = async (token) => {
   try {
-    const userData = jwt.verify(token, access_secret);
-    return Promise.resolve(userData);
+    const userData = jwt.verify(token, access_secret)
+    return {...userData}
   } catch (error) {
-    return Promise.reject(error);
+    throw error
   }
 }
 
 const validateRefreshToken = async (token) => {
   try {
-    const userData = jwt.verify(token, refresh_secret);
-    return Promise.resolve({...userData, token});
+    const userData = jwt.verify(token, refresh_secret)
+    return {...userData, token}
   } catch (error) {
-    return Promise.reject(error);
+    throw error
   }
 }
 
 const refresh = async (refreshToken) => {
 
   if (!refreshToken) {
-    return Promise.reject("refreshToken undefined")
+    throw new Error("refreshToken undefined")
   }
   const token = await validateRefreshToken(refreshToken)
   if (!token ) {
-    return Promise.reject(`Can't find refresh token or it is doesn't valid`)
+    throw new Error(`Can't find refresh token or it is doesn't valid`)
   }
-  const userData = await User.findOne({where:{id:token.id}});
+  const userData = await User.findOne({where:{id:token.id}})
   const tokens = await generateTokens(userData) 
 
   return { userData, ...tokens }

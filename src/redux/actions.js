@@ -1,11 +1,13 @@
 import Axios from '../axios'
 import * as actionTypes from './actionTypes'
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 export const dataLoadStart = (userId) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DATA_LOAD_START })
-            const response = await Axios.get(`/tasks/list/${userId}`)
+            const response = await Axios.get(`/tasks/list?userId=${userId}`)
             dispatch(response.status < 400 ?
                 dataLoadSuccess(response.data) :
                 dataLoadError()
@@ -45,6 +47,10 @@ export const addItemStart = (userId, text) => {
 }
 
 const addItemSuccess = (data) => {
+    toast.success("Add item success", {
+        position: "top-center",
+        autoClose:2000,
+    })
     return {
         type: actionTypes.ADD_ITEM_SUCCESS,
         data
@@ -52,18 +58,22 @@ const addItemSuccess = (data) => {
 }
 
 const addItemError = () => {
+    toast.error("Add item error", {
+        position: "top-center",
+        autoClose:2000,
+    })
     return {
         type: actionTypes.ADD_ITEM_ERROR
     }
 }
 
-export const renameItemStart = (id, newText, userId) => {
+export const renameItemStart = (taskId, newText, userId) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.RENAME_ITEM_START })
-            const params = JSON.stringify({usr:userId, id})
+            const params = JSON.stringify({userId, taskId})
 
-            const response = await Axios.put(`/tasks/item/${params}`, { text: newText })
+            const response = await Axios.put(`/tasks/item?userId=${userId}&taskId=${taskId}`, { text: newText })
             dispatch(response.status < 400 ?
                 renameItemSuccess(response.data) :
                 renameItemError()
@@ -75,6 +85,10 @@ export const renameItemStart = (id, newText, userId) => {
 }
 
 const renameItemSuccess = (data) => {
+    toast.success("rename item success", {
+        position: "top-center",
+        autoClose:2000,
+    })
     return {
         type: actionTypes.RENAME_ITEM_SUCCESS,
         data
@@ -82,18 +96,21 @@ const renameItemSuccess = (data) => {
 }
 
 const renameItemError = () => {
+    toast.error("rename item error", {
+        position: "top-center",
+        autoClose:2000,
+    })
     return {
         type: actionTypes.RENAME_ITEM_ERROR
     }
 }
 
-export const deleteItemStart = (id, userId) => {
+export const deleteItemStart = (taskId, userId) => {
     return async (dispatch) => {
         try {
             dispatch({ type: actionTypes.DELETE_ITEM_START })
-            const params = JSON.stringify({usr:userId, id})
 
-            const response = await Axios.delete(`/tasks/item/${params}`)
+            const response = await Axios.delete(`/tasks/item?userId=${userId}&taskId=${taskId}`)
             dispatch(response.status < 400 ?
                 deleteItemSuccess(response.data) :
                 deleteItemError()
@@ -105,6 +122,10 @@ export const deleteItemStart = (id, userId) => {
 }
 
 const deleteItemSuccess = (data) => {
+    toast.success("delete item success", {
+        position: "top-center",
+        autoClose:2000,
+    })
     return {
         type: actionTypes.DELETE_ITEM_SUCCESS,
         data
@@ -112,6 +133,10 @@ const deleteItemSuccess = (data) => {
 }
 
 const deleteItemError = () => {
+    toast.error("delete item error", {
+        position: "top-center",
+        autoClose:2000,
+    })
     return {
         type: actionTypes.DELETE_ITEM_ERROR
     }
@@ -136,7 +161,6 @@ export const signUpStart = (email, password) => {
 const signUpSuccess = (response) => {
     const { user, accessToken } = response.data;
     localStorage.setItem('token', accessToken)
-    // window.location.replace('/tasks')
     return {
         type: actionTypes.SIGN_UP_SUCCESS,
         email: user.email, 
@@ -169,7 +193,6 @@ export const logInStart = (email, password) => {
 const logInSuccess = (response) => {
     const { user, accessToken, tasks} = response.data;
     localStorage.setItem('token', accessToken)
-    // window.location.replace('/tasks')
     return {
         type: actionTypes.LOG_IN_SUCCESS,
         email: user.email, 
@@ -200,7 +223,6 @@ export const logOutStart = () => {
 
 const logOutSuccess = () => {
     localStorage.removeItem('token')
-    // window.location.replace('/auth/log-in')
     return {
         type: actionTypes.LOG_OUT_SUCCESS
     }
@@ -221,7 +243,6 @@ export const checkUserAuthStart = () => {
             dispatch(response.status === 200 ?
                 checkUserSuccess(response.data) :
                 checkUserError())
-            // if(response.status === 200) dispatch({type: actionTypes.DATA_LOAD_START})
         } catch {
             dispatch(checkUserError())
         }

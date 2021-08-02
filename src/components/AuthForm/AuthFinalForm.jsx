@@ -4,23 +4,16 @@ import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Form, Field } from 'react-final-form'
 import Axios from '../../axios'
-import _ from 'lodash'
-import AwesomeDebouncePromise from 'awesome-debounce-promise';
+const debounce = require('debounce-promise')
 
-const asyncFunction = (value) => Axios.post(`/auth/check-email`, { email: value.trim() })
-
-const asyncFunctionDebounced = AwesomeDebouncePromise(asyncFunction, 1000);
-const customEmailCheck = async (title, value) => {
-  if (title === "log in") { return undefined }
-  try {
-    await asyncFunctionDebounced(value)
-    return { email: 'This email has already been registered' }
-  } catch (error) {
-    return undefined
-  }
+const apiCALL = (email) => {
+  return Axios.post(`/auth/check-email`, { email: email.trim() })
 }
 
+const debounceFUNCTION = debounce(apiCALL, 500)
+
 export const AuthFinalForm = props => {
+
   const history = useHistory()
   const dispatch = useDispatch()
 
@@ -40,20 +33,7 @@ export const AuthFinalForm = props => {
       <Form
         onSubmit={onSubmit}
         initialValues={{ email: '', password: '' }}
-        validate={values => {
-          const errors = {}
-          if (!values.email) {
-            errors.email = "Required field"
-          } else if (!/\S+@\S+\.\S+/.test(values.email)) {
-            errors.email = "Enter correct email"
-          }
-          if (!values.password) {
-            errors.password = "Required field"
-          } else if (values.password.length < 4) {
-            errors.password = `Length should be greater than 4`
-          }
-          return Object.keys(errors).length ? errors : customEmailCheck(title, values.email)
-        }}
+
         render={({ handleSubmit, form, submitting, pristine, values, validating }) => (
           <form onSubmit={handleSubmit}>
             <p className="title">{title}</p>
@@ -61,6 +41,21 @@ export const AuthFinalForm = props => {
               Email
               <Field
                 name="email"
+                validate={async (email) => {
+                  if (!email) {
+                    return "Required field"
+                  } else if (!/\S+@\S+\.\S+/.test(email)) {
+                    return "Input correct email"
+                  } else {
+                    try {
+                      if (title === "log in") { return undefined }
+                      await debounceFUNCTION(email)
+                      return "This email address has already been registered"
+                    } catch {
+                      return undefined
+                    }
+                  }
+                }}
               >
                 {({ input, meta }) => (
                   <><input
@@ -77,6 +72,13 @@ export const AuthFinalForm = props => {
               <span>Password</span>
               <Field
                 name="password"
+                validate={(password) => {
+                  if (!password) {
+                    return "Required field"
+                  } else if (password.length < 4) {
+                    return "Minimal length is 4 symbols"
+                  }
+                }}
               >
                 {({ input, meta }) => (
                   <><input
@@ -88,14 +90,15 @@ export const AuthFinalForm = props => {
                 )}
               </Field>
             </label>
-            {title === 'log in' ?
-              <p className="link-text">Don't have an account? <Link className="link" to="sign-up">Sign Up</Link></p> :
-              <p className="link-text">Already have an account? <Link className="link" to="log-in">Log In</Link></p>
+            {
+              title === 'log in' ?
+                <p className="link-text">Don't have an account? <Link className="link" to="sign-up">Sign Up</Link></p> :
+                <p className="link-text">Already have an account? <Link className="link" to="log-in">Log In</Link></p>
             }
             <button className="submit-link" type="submit" disabled={submitting || validating} >{title}</button>
-            {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
           </form>
-        )}
+        )
+        }
       />
     </div>
   )

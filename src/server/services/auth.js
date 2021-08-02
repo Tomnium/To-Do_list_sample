@@ -17,9 +17,10 @@ const createUser = async (email, password) => {
     })
 
     const tokens = await tokenService.generateTokens(user);
-    return created ?
-        Promise.resolve({user, ...tokens}) :
-        Promise.reject(new Error("This email address has already been registered."))
+    if(created){
+        return {user, ...tokens} 
+    }
+    throw new Error("This email address has already been registered.")
 }
 
 const logIn = async (email, password) => {
@@ -34,19 +35,20 @@ const logIn = async (email, password) => {
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
-    return isPasswordValid ?
-        Promise.resolve({user, ...tokens}) :
-        Promise.reject(new Error("Invalid password"))
+    if(isPasswordValid){
+        return {user, ...tokens} 
+    }
+    throw new Error("Invalid password")
 }
 
 const checkEmail = async(email) => {
     const user = await User.findOne({where:{email}})
     
     if(user){
-        return Promise.resolve({user})
-    } else{
-        return Promise.reject(new Error("This email address has not been registered."))
-    }
+        return {user}
+    } 
+    
+    throw new Error("This email address has not been registered.")
 }
 
 module.exports = {

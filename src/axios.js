@@ -30,11 +30,6 @@ Axios.interceptors.response.use(
                 console.log(error)
             }
         }  
-        // else if(error.response.status === 409){
-        //     console.log(`AXIOS: `)
-        //     console.log(error)
-        //     throw new Error(error)
-        // }
         throw error
     })
 )

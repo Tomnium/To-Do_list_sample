@@ -14,17 +14,12 @@ export const Header = () => {
         history.push('/auth/log-in')
     }
 
-
     return (
-        <div className="header-container">
-            {
-                isLoggedIn ? <p className="username">Logged in as {email}</p> : <div></div>
-            }
-            {
-                // isLoggedIn ?
-                <button className="auth-button" onClick={handleLogOut}>Log Out</button> //:
-                // <Link className="auth-button" to="/auth/log-in">Log in</Link>
-            }
-        </div>
+        <>
+            <div className="header-container">
+                {isLoggedIn ? <p className="username">Logged in as {email}</p> : <div></div>}
+                <button className="auth-button" onClick={handleLogOut}>Log Out</button>
+            </div>
+        </>
     )
 }

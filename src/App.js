@@ -4,9 +4,11 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { reducer } from './redux/reducer'
 import thunk from 'redux-thunk'
-import { BrowserRouter,  Switch } from 'react-router-dom'
+import { BrowserRouter, Switch} from 'react-router-dom'
 import { checkUserAuthStart } from './redux/actions'
-import PrivateRouteOwn from './utils/PrivateRoute'
+import { Header, List, LogInForm, SignUpForm } from './components'
+import CustomRouter from './components/CustomRouters'
+import { ToastContainer } from 'react-toastify'
 
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 const store = createStore(reducer, composeEnhancers(
@@ -14,6 +16,7 @@ const store = createStore(reducer, composeEnhancers(
 ))
 
 const App = () => {
+
   React.useEffect(() => {
     store.dispatch(checkUserAuthStart())
   }, [])
@@ -22,8 +25,9 @@ const App = () => {
     <Provider store={store}>
       <div className="App">
         <BrowserRouter>
+          <ToastContainer />
           <Switch>
-            <PrivateRouteOwn />
+              <CustomRouter />
           </Switch>
         </BrowserRouter>
       </div>
@@ -32,13 +36,3 @@ const App = () => {
 }
 
 export default App
-
-
-// {
-//   privateRoute()
-// }
-// {/* <Route exact path="/" component={AuthComponent} */}
-// {/* /> */}
-// <Route exact path='/' component={Home} />
-// {/* <Route exact path='/auth/sign-up' component={SignUpForm} /> */}
-// <Redirect to='/' />
